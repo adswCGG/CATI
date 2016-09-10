@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Usuario</title>
+</head>
+<body>
+<form action="/usuarios" method="POST">
+    <fieldset>
+            <div>
+                <label>Username</label>
+            </div>
+                <input type="text" required name = "username" placeholder="Nombre Usuario">
+            <div>
+                <label>Password</label>
+            </div>
+            <input type="password" required name = "password" placeholder="password">
+            <div>
+                <label>email</label>
+            </div>
+            <input type="text" required name = "email" placeholder="email">
+            <div>
+                <button type="submit" >Submit</button>
+            </div>
+            <div>
+                <select id="permiso" name="permiso">
+                    <option value="ADMIN" >ADMIN</option>
+                    <option value="ENCUESTADOR">ENCUESTADOR</option>
+                </select>
+            </div>
+    </fieldset>
+</form>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios</title>
+</head>
+<body>
+<h1>Aqui va la lista de usuarios!!!!</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th> ID </th>
+        <th> Username </th>
+        <th> Password </th>
+        <th> Email </th>
+        <th> Acciones </th>
+    </tr>
+    </thead>
+    <% for (var i= 0;i<resultado.length;i++){ %>
+    <tbody>
+    <tr>
+        <td><%= resultado[i].id%></td>
+        <td><%= resultado[i].username%></td>
+        <td><%= resultado[i].password %></td>
+        <td><%= resultado[i].email %></td>
+        <td>
+            <form action="/modificar" method="GET">
+                <input type="submit" value="modificar">
+            </form>
+            <form action="/api/usuarios/<%=resultado[i].id%>" method="DELETE">
+                <input type="submit" value="eliminar">
+            </form>
+        </td>
+    </tr>
+    <% }%>
+    </tbody>
+</table>
+
+</body>
+</html>
