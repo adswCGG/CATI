@@ -7,7 +7,9 @@ app.use(bodyParser.urlencoded({extended: true }));
 app.use(bodyParser.json());
 
 
+
 app.get("/",function (req,res) {
+    console.log(req.session.name);
     res.render('index.html',{title: "Hola mundo"});
 })
 
@@ -16,7 +18,7 @@ app.get("/usuarios",function (req,res) {
 })
 
 app.get("/CreateUser",function (req,res) {
-    res.render('CreateUser.html')
+    res.redirect('api/CreateUser')
 })
 
 app.get("/modificar/:id",function (req,res) {
@@ -28,19 +30,29 @@ app.get("/login",function (req,res) {
 
 })
 
-app.post("/usuarios", function (req,res) {
-    models.User.create({
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email
-    }).then(function (result) {
-        models.Rol.create({
-            permiso: req.body.permiso,
-            UsuarioId: result.id
+app.post("/login", function (req,res,next) {
+    try {
+        models.User.find({where: {username: req.body.username}}).then(function (user) {
+            if(user !== null){
+                if (req.body.password == user.password) {
+                    req.session.name = user.username;
+                    req.session.save();
+                }
+                else {
+                    console.log("contraseña erronea");
+                }
+            }
+            else{
+                console.log("error de usuario");
+            }
         });
-        res.redirect("/");
-    });
-})
+    }
+
+    catch(ex){
+        console.log("error de usuario");
+    }
+    res.redirect("/");
+});
 
 app.get("/:nombre",function (req,res) {
     res.render('index.html', { title: req.params.nombre})

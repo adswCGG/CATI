@@ -8,16 +8,36 @@ var app=express();
 var models  = require('../models/index.js');
 var fs = require("fs");
 
-module.exports = router;
+
 
 app.use(bodyParser.urlencoded({extended: true }));
 app.use(bodyParser.json());
+
 
 router.get("/usuarios", function (req,res) {
     models.User.findAll().then(function (user) {
         res.render('users.html', {resultado: user});
     });
 })
+
+router.get("/CreateUser",function (req,res) {
+    res.render("CreateUser.html");
+})
+
+router.post("/usuarios", function (req,res) {
+    models.User.create({
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email
+    }).then(function (result) {
+        models.Rol.create({
+            permiso: req.body.permiso,
+            UsuarioId: result.id
+        });
+        res.redirect("/");
+    });
+})
+
 
 router.get('/usuarios/:id',function(req,res) {
 
@@ -61,7 +81,6 @@ router.post('/usuarios/:id',function(req,res) {
             })
         }
     else if (req.body.method == "DELETE") {
-        console.log("casiiiii");
         models.User.destroy({where: {id: req.params.id}}).then(function (user) {
             return models.User.findAll().then(function (user) {
                 res.redirect("/")
@@ -85,25 +104,5 @@ router.post("/usuarios", function (req,res) {
     });
 })
 
-router.post("/login", function (req,res,next) {
-    try {
-        models.User.find({where: {username: req.body.username}}).then(function (user) {
-            if(user !== null){
-                if (req.body.password == user.password) {
-                    console.log("login");
-                }
-                else {
-                    console.log("contraseña erronea");
-                }
-            }
-            else{
-                console.log("error de usuario");
-            }
-        });
-    }
 
-    catch(ex){
-        console.log("error de usuario");
-    }
-    res.redirect("/");
-});
+module.exports = router;
