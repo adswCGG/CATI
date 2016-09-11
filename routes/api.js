@@ -115,41 +115,36 @@ router.get("/CargarArchivo", function (req,res) {
 })
 
 router.post("/CargarArchivo", function (req,res) {
-    fs.readFile('./data.csv','utf8',function read(err,data) {
+    fs.readFile(req.body.archivo.path,'utf8',function read(err,allText) {
         if (err){
             throw err;
         }
-        var nombre
-        var apellido
-        var numero
-        var estado;
-        nombre = data[1] + data[2]
-        for(var j=40;j<data.length;j++) {
-            if(data[j]==" "){
-                break
+
+        var allTextLines = allText.split(/\r\n|\n/);
+        var headers = allTextLines[0].split(',');
+        var lines = [];
+        for (var i=1; i<allTextLines.length; i++) {
+            var data = allTextLines[i].split(',');
+            if (data.length == headers.length) {
+                var tarr = [];
+                for (var j=0; j<headers.length; j++) {
+                    tarr.push(data[j]);
+                }
+                lines.push(tarr);
             }
-            nombre+=data[j];
         }
-        for(var i=j;i<data.length;i++) {
-            if(data[i]==" "){
-                break
-            }
-            apellido+=data[i];
+        for(var i=0;i<lines.length;i++){
+            models.Dato.create({
+                nombre: lines[i][0],
+                apellido: lines[i][1],
+                numero: lines[i][1],
+                estado: lines[i][1]
+            })
+            console.log(lines[i][0]);
+            console.log(lines[i][1]);
         }
-        for(var k=i;k<data.length;k++) {
-            if(data[k]==" "){
-                break
-            }
-            numero+=data[k];
-        }
-        for(var l=k;l<data.length;l++) {
-            if(data[j]==" "){
-                break
-            }
-            estado+=data[l];
-        }
-        console.log(nombre);
-        res.redirect("/");
+        console.log(req.body.archivo.path)
+        res.redirect("/api/CargarArchivo");
     })
 })
 

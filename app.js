@@ -4,12 +4,12 @@ var bodyParser = require('body-parser');
 var models = require("./models/index.js");
 var session = require("express-session");
 var session_middleware = require("./middlewares/session");
+var formidable = require("express-formidable");
 
 app.use(session({
     secret: "123swcati098"
 }));
-
-
+app.use(formidable.parse());
 app.use("/",require('./routes/router.js'));
 app.use("/api",session_middleware);
 app.use('/api', require('./routes/api.js'));
