@@ -15,13 +15,19 @@ app.use(bodyParser.json());
 
 
 router.get("/usuarios", function (req,res) {
+
     models.User.findAll().then(function (user) {
         res.render('users.html', {resultado: user});
     });
 })
 
 router.get("/CreateUser",function (req,res) {
-    res.render("CreateUser.html");
+    if(req.session.permiso=="ADMIN") {
+        res.render("CreateUser.html");
+    }
+    else{
+        res.redirect("/");
+    }
 })
 
 router.post("/usuarios", function (req,res) {
@@ -32,7 +38,7 @@ router.post("/usuarios", function (req,res) {
     }).then(function (result) {
         models.Rol.create({
             permiso: req.body.permiso,
-            UsuarioId: result.id
+            UserId: result.id
         });
         res.redirect("/");
     });

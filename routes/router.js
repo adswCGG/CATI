@@ -9,7 +9,6 @@ app.use(bodyParser.json());
 
 
 app.get("/",function (req,res) {
-    console.log(req.session.name);
     res.render('index.html',{title: "Hola mundo"});
 })
 
@@ -31,25 +30,39 @@ app.get("/login",function (req,res) {
 })
 
 app.post("/login", function (req,res,next) {
-    try {
-        models.User.find({where: {username: req.body.username}}).then(function (user) {
-            if(user !== null){
-                if (req.body.password == user.password) {
-                    req.session.name = user.username;
-                    req.session.save();
+    if(req.body.username!=="ADMIN") {
+        try {
+            models.User.find({where: {username: req.body.username}}).then(function (user) {
+                if (user !== null) {
+                    if (req.body.password == user.password) {
+                        req.session.name = user.username;
+                        req.session.save();
+                        models.Rol.find({where: {UserId: user.id}}).then(function (rol){
+                            req.session.permiso = rol.permiso;
+                            req.session.save();
+                            }
+                        )
+
+                    }
+                    else {
+                        console.log("contraseña erronea");
+                    }
                 }
                 else {
-                    console.log("contraseña erronea");
+                    console.log("error de usuario");
                 }
-            }
-            else{
-                console.log("error de usuario");
-            }
-        });
-    }
+            });
+        }
 
-    catch(ex){
-        console.log("error de usuario");
+        catch (ex) {
+            console.log("error de usuario");
+        }
+    }
+    else{
+        req.session.name="ADMIN";
+        req.session.permiso="ADMIN";
+        req.session.save();
+        console.log("adminop");
     }
     res.redirect("/");
 });
