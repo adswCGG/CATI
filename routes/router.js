@@ -2,6 +2,7 @@ var express = require("express");
 var app=express();
 var bodyParser = require('body-parser');
 var models  = require('../models/index.js');
+var fs = require('fs');
 
 app.use(bodyParser.urlencoded({extended: true }));
 app.use(bodyParser.json());
@@ -28,6 +29,7 @@ app.get("/login",function (req,res) {
     res.render("login.html")
 
 })
+
 
 app.post("/login", function (req,res,next) {
     if(req.body.username!=="ADMIN") {
@@ -64,6 +66,7 @@ app.post("/login", function (req,res,next) {
         req.session.save();
         console.log("adminop");
     }
+
     res.redirect("/");
 });
 

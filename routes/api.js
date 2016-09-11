@@ -110,5 +110,47 @@ router.post("/usuarios", function (req,res) {
     });
 })
 
+router.get("/CargarArchivo", function (req,res) {
+    res.render("CargarArchivo.html")
+})
+
+router.post("/CargarArchivo", function (req,res) {
+    fs.readFile('./data.csv','utf8',function read(err,data) {
+        if (err){
+            throw err;
+        }
+        var nombre
+        var apellido
+        var numero
+        var estado;
+        nombre = data[1] + data[2]
+        for(var j=40;j<data.length;j++) {
+            if(data[j]==" "){
+                break
+            }
+            nombre+=data[j];
+        }
+        for(var i=j;i<data.length;i++) {
+            if(data[i]==" "){
+                break
+            }
+            apellido+=data[i];
+        }
+        for(var k=i;k<data.length;k++) {
+            if(data[k]==" "){
+                break
+            }
+            numero+=data[k];
+        }
+        for(var l=k;l<data.length;l++) {
+            if(data[j]==" "){
+                break
+            }
+            estado+=data[l];
+        }
+        console.log(nombre);
+        res.redirect("/");
+    })
+})
 
 module.exports = router;
