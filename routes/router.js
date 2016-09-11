@@ -19,8 +19,13 @@ app.get("/CreateUser",function (req,res) {
     res.render('CreateUser.html')
 })
 
-app.get("/modificar",function (req,res) {
-    res.render("Modificar.html")
+app.get("/modificar/:id",function (req,res) {
+    res.render("Modificar.html",{id: req.params.id})
+})
+
+app.get("/login",function (req,res) {
+    res.render("login.html")
+
 })
 
 app.post("/usuarios", function (req,res) {

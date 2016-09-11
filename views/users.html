@@ -25,10 +25,11 @@
         <td><%= resultado[i].password %></td>
         <td><%= resultado[i].email %></td>
         <td>
-            <form action="/modificar" method="GET">
+            <form action="/modificar/<%=resultado[i].id%>" method="GET">
                 <input type="submit" value="modificar">
             </form>
-            <form action="/api/usuarios/<%=resultado[i].id%>" method="DELETE">
+            <form action="/api/usuarios/<%=resultado[i].id%>" method="POST">
+                <input type="hidden" value="DELETE" name="method">
                 <input type="submit" value="eliminar">
             </form>
         </td>

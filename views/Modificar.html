@@ -5,6 +5,22 @@
     <title>Modificar</title>
 </head>
 <body>
+<form action="/api/usuarios/<%=id%>" method="POST">
+    <fieldset>
+        <div>
+            <label>Username</label>
+        </div>
+        <input type="text" name = "username" placeholder="Nombre Usuario">
+        <div>
+            <label>email</label>
+        </div>
+        <input type="text" name = "email" placeholder="email">
+        <div>
+            <input type="hidden" name="method" value="PUT">
+            <button type="submit" >Submit</button>
+        </div>
+    </fieldset>
+</form>
 
 </body>
 </html>

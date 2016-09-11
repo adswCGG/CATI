@@ -5,6 +5,19 @@
     <title>Title</title>
 </head>
 <body>
+    <form action="/api/login" method="POST">
+        <fieldset>
+            <label>Usename</label>
+            <div>
+                <input type="text" required name="username" placeholder="username">
+            </div>
+            <label>Password</label>
+            <div>
+                <input type="password" required name="password" placeholder="password">
+            </div>
+            <button type="submit" >Login</button>
+        </fieldset>
+    </form>
 
 </body>
 </html>
