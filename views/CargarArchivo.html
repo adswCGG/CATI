@@ -7,11 +7,17 @@
 <body>
 <form action="/api/CargarArchivo" method="POST" enctype="multipart/form-data">
     <fieldset>
+
+            <label>Seleccione el archivo con los datos a cargar</label>
         <div>
             <input type="file" name="archivo">
         </div>
         <button type="submit" >Cargar</button>
     </fieldset>
+</form>
+
+<form action="/" method="GET">
+    <button type="submit">Volver</button>
 </form>
 </body>
 </html>

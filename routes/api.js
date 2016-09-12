@@ -19,7 +19,7 @@ router.get("/usuarios", function (req,res) {
     models.User.findAll().then(function (user) {
         res.render('users.html', {resultado: user});
     });
-})
+});
 
 router.get("/CreateUser",function (req,res) {
     if(req.session.permiso=="ADMIN") {
@@ -28,7 +28,7 @@ router.get("/CreateUser",function (req,res) {
     else{
         res.redirect("/");
     }
-})
+});
 
 router.post("/usuarios", function (req,res) {
     models.User.create({
@@ -42,7 +42,7 @@ router.post("/usuarios", function (req,res) {
         });
         res.redirect("/");
     });
-})
+});
 
 
 router.get('/usuarios/:id',function(req,res) {
@@ -54,7 +54,7 @@ router.get('/usuarios/:id',function(req,res) {
     }).then(function (user) {
         res.render('users.html', {title: 'Listar Usuarios', resultado: user});
     });
-})
+});
 
 router.post('/usuarios/:id',function(req,res) {
     if (req.body.method == "PUT") {
@@ -93,7 +93,7 @@ router.post('/usuarios/:id',function(req,res) {
             })
         })
     }
-})
+});
 
 
 router.post("/usuarios", function (req,res) {
@@ -108,11 +108,11 @@ router.post("/usuarios", function (req,res) {
         });
         res.redirect("/");
     });
-})
+});
 
 router.get("/CargarArchivo", function (req,res) {
     res.render("CargarArchivo.html")
-})
+});
 
 router.post("/CargarArchivo", function (req,res) {
     fs.readFile(req.body.archivo.path,'utf8',function read(err,allText) {
@@ -140,12 +140,10 @@ router.post("/CargarArchivo", function (req,res) {
                 numero: lines[i][1],
                 estado: lines[i][1]
             })
-            console.log(lines[i][0]);
-            console.log(lines[i][1]);
         }
         console.log(req.body.archivo.path)
         res.redirect("/api/CargarArchivo");
     })
-})
+});
 
 module.exports = router;

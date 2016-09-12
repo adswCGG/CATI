@@ -5,8 +5,9 @@
     <title>Crear Usuario</title>
 </head>
 <body>
+<fieldset>
 <form action="/api/usuarios" method="POST">
-    <fieldset>
+
             <div>
                 <label>Username</label>
             </div>
@@ -20,7 +21,7 @@
             </div>
             <input type="text" required name = "email" placeholder="email">
             <div>
-                <button type="submit" >Submit</button>
+            <label>Seleccione permisos</label>
             </div>
             <div>
                 <select id="permiso" name="permiso">
@@ -28,7 +29,16 @@
                     <option value="ENCUESTADOR">ENCUESTADOR</option>
                 </select>
             </div>
-    </fieldset>
+
+        <div>
+            <button type="submit" >Crear Usuario</button>
+        </div>
+
+
 </form>
+<form action="/" method="GET">
+    <button type="submit">Cancelar</button>
+</form>
+</fieldset>
 </body>
 </html>

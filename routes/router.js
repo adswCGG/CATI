@@ -26,8 +26,19 @@ app.get("/modificar/:id",function (req,res) {
 })
 
 app.get("/login",function (req,res) {
-    res.render("login.html")
+    if(!req.session.name) {
+        res.render("login.html")
+    }
+    else{
+        res.redirect("/")
+    }
+})
 
+app.get("/logout",function (req,res) {
+    if(req.session.name){
+        req.session.destroy();
+    }
+    res.redirect("/")
 })
 
 
