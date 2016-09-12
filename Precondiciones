@@ -1,0 +1,3 @@
+Instalar todos los módulos de node encontrados en package.json
+
+Modificar la configuración del servidor en : /models/index.js
