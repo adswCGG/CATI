@@ -1,44 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>Crear Usuario</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body        { padding-top:80px; }
+    </style>
 </head>
 <body>
-<fieldset>
-<form action="/api/usuarios" method="POST">
-
-            <div>
-                <label>Username</label>
-            </div>
-                <input type="text" required name = "username" placeholder="Nombre Usuario">
-            <div>
-                <label>Password</label>
-            </div>
-            <input type="password" required name = "password" placeholder="password">
-            <div>
-                <label>email</label>
-            </div>
-            <input type="text" required name = "email" placeholder="email">
-            <div>
-            <label>Seleccione permisos</label>
-            </div>
-            <div>
-                <select id="permiso" name="permiso">
-                    <option value="ADMIN" >ADMIN</option>
-                    <option value="ENCUESTADOR">ENCUESTADOR</option>
-                </select>
-            </div>
-
-        <div>
-            <button type="submit" >Crear Usuario</button>
-        </div>
-
-
-</form>
-<form action="/" method="GET">
-    <button type="submit">Cancelar</button>
-</form>
-</fieldset>
+<div id="todo-form" class="row">
+    <div class="col-sm-8 col-sm-offset-2 text-center">
+        <form action="/api/usuarios" method="POST">
+            <fieldset>
+                    <input type="text" required name = "username" placeholder="Nombre Usuario" class="form-control input-lg text-center">
+                    <input type="password" required name = "password" placeholder="Contraseña" class="form-control input-lg text-center">
+                    <input type="text" required name = "email" placeholder="E-mail" class="form-control input-lg text-center">
+                    <div>
+                        <select class="form-control input-lg text-center" id="permiso" name="permiso">
+                            <option value="ADMIN" >ADMIN</option>
+                            <option value="ENCUESTADOR">ENCUESTADOR</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary btn-lg" >Submit</button>
+                    </div>
+            </fieldset>
+        </form>
+        <form action="/" method="GET">
+            <button type="submit" class="btn btn-primary btn-lg">Cancelar</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>
