@@ -15,10 +15,14 @@ app.use(bodyParser.json());
 
 
 router.get("/usuarios", function (req,res) {
-
-    models.User.findAll().then(function (user) {
-        res.render('users.html', {resultado: user});
-    });
+    if(req.session.permiso=="ADMIN") {
+        models.User.findAll().then(function (user) {
+            res.render('users.html', {resultado: user});
+        });
+    }
+    else{
+        res.redirect("/");
+    }
 });
 
 router.get("/CreateUser",function (req,res) {

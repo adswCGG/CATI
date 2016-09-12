@@ -12,7 +12,7 @@ var opts ={
     }
 }
 
-var sequelize = new Sequelize("nobrebd",'usuario','contraseña',opts);
+var sequelize = new Sequelize("nombreDB",'usuario','password',opts);
 var db = {};
 
 fs  .readdirSync(__dirname)
