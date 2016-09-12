@@ -111,7 +111,13 @@ router.post("/usuarios", function (req,res) {
 });
 
 router.get("/CargarArchivo", function (req,res) {
-    res.render("CargarArchivo.html")
+    if(req.session.permiso=="ADMIN") {
+        res.render("CargarArchivo.html");
+    }
+    else{
+        res.redirect("/");
+    }
+
 });
 
 router.post("/CargarArchivo", function (req,res) {
