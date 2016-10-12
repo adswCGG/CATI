@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Datos guardados</title>
+</head>
+<body>
+
+<h1>Se han agregado los siguientes datos</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th> Nombre </th>
+        <th> Apellido </th>
+        <th> Numero </th>
+        <th> Estado </th>
+    </tr>
+    </thead>
+    <% for (var i= 0;i<datos.length;i++){ %>
+    <tbody>
+    <tr>
+        <td><%= datos[i][0]%></td>
+        <td><%= datos[i][1]%></td>
+        <td><%= datos[i][2] %></td>
+        <td><%= datos[i][3] %></td>
+    </tr>
+    <% }%>
+    </tbody>
+</table>
+<form action="/api/CargarArchivo" method="GET">
+    <button type="submit">Volver</button>
+</form>
+
+</body>
+</html>

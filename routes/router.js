@@ -10,27 +10,28 @@ app.use(bodyParser.json());
 
 
 app.get("/",function (req,res) {
-    res.render('index.html',{title: "Hola mundo"});
+    console.log(req.session)
+    res.render('index.html',{user: req.session});
 })
 
 app.get("/usuarios",function (req,res) {
-    res.redirect("api/usuarios")
+    res.redirect("api/usuarios");
 })
 
 app.get("/CreateUser",function (req,res) {
-    res.redirect('api/CreateUser')
+    res.redirect('api/CreateUser');
 })
 
 app.get("/modificar/:id",function (req,res) {
-    res.render("Modificar.html",{id: req.params.id})
+    res.render("Modificar.html",{id: req.params.id});
 })
 
 app.get("/login",function (req,res) {
     if(!req.session.name) {
-        res.render("login.html")
+        res.render("login.html");
     }
     else{
-        res.redirect("/")
+        res.redirect("/");
     }
 })
 
@@ -38,7 +39,7 @@ app.get("/logout",function (req,res) {
     if(req.session.name){
         req.session.destroy();
     }
-    res.redirect("/")
+    res.redirect("/");
 })
 
 

@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 router.get("/usuarios", function (req,res) {
     if(req.session.permiso=="ADMIN") {
         models.User.findAll().then(function (user) {
-            res.render('users.html', {resultado: user});
+            res.render('users.html', {resultado: user, user: req.session});
         });
     }
     else{
@@ -68,15 +68,15 @@ router.post('/usuarios/:id',function(req,res) {
                     user.updateAttributes({
                         username: req.body.username,
                         email: req.body.email
-                    }).then(function (result) {
-                        res.send(result);
+                    }).then(function () {
+                        res.redirect("/");
                     })
                 }
                 else {
                     user.updateAttributes({
                         username: req.body.username
-                    }).then(function (result) {
-                        res.send(result);
+                    }).then(function () {
+                        res.redirect("/");
                     })
                 }
 
@@ -84,15 +84,15 @@ router.post('/usuarios/:id',function(req,res) {
             else if(req.body.email){
                 user.updateAttributes({
                     email: req.body.email
-                }).then(function (result){
-                    res.send(result);
+                }).then(function (){
+                    res.redirect("/");
                 })
             }
             })
         }
     else if (req.body.method == "DELETE") {
-        models.User.destroy({where: {id: req.params.id}}).then(function (user) {
-            return models.User.findAll().then(function (user) {
+        models.User.destroy({where: {id: req.params.id}}).then(function () {
+            return models.User.findAll().then(function () {
                 res.redirect("/")
             })
         })
@@ -147,12 +147,12 @@ router.post("/CargarArchivo", function (req,res) {
             models.Dato.create({
                 nombre: lines[i][0],
                 apellido: lines[i][1],
-                numero: lines[i][1],
-                estado: lines[i][1]
+                numero: lines[i][2],
+                estado: lines[i][3]
             })
         }
         console.log(req.body.archivo.path)
-        res.redirect("/api/CargarArchivo");
+        res.render("MostrarDatos.html", {datos: lines} );
     })
 });
 
