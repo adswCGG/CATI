@@ -14,11 +14,23 @@ app.use(bodyParser.urlencoded({extended: true }));
 app.use(bodyParser.json());
 
 
-router.get("/usuarios", function (req,res) {
+router.get("/logout",function (req,res) {
+    if(req.session.name){
+        req.session.destroy();
+    }
+    res.redirect("/")
+})
 
-    models.User.findAll().then(function (user) {
-        res.render('users.html', {resultado: user});
-    });
+
+router.get("/usuarios", function (req,res) {
+    if (req.session.permiso == "ADMIN") {
+        models.User.findAll().then(function (user) {
+            res.render('users.html', {resultado: user});
+        });
+    }
+    else {
+        res.redirect("/");
+    }
 });
 
 router.get("/CreateUser",function (req,res) {
@@ -151,5 +163,7 @@ router.post("/CargarArchivo", function (req,res) {
         res.redirect("/api/CargarArchivo");
     })
 });
+
+
 
 module.exports = router;

@@ -10,7 +10,11 @@ app.use(bodyParser.json());
 
 
 app.get("/",function (req,res) {
-    res.render('index.html',{title: "Hola mundo"});
+    if(req.session.name!=null) {
+        res.render('index.html', {session: req.session});
+    }else{
+        res.render('login.html');
+    }
 })
 
 app.get("/usuarios",function (req,res) {
@@ -34,15 +38,7 @@ app.get("/login",function (req,res) {
     }
 })
 
-app.get("/logout",function (req,res) {
-    if(req.session.name){
-        req.session.destroy();
-    }
-    res.redirect("/")
-})
-
-
-app.post("/login", function (req,res,next) {
+app.post("/login", function (req,res) {
     if(req.body.username!=="ADMIN") {
         try {
             models.User.find({where: {username: req.body.username}}).then(function (user) {
@@ -50,25 +46,30 @@ app.post("/login", function (req,res,next) {
                     if (req.body.password == user.password) {
                         req.session.name = user.username;
                         req.session.save();
+                        console.log(req.session.name)
                         models.Rol.find({where: {UserId: user.id}}).then(function (rol){
                             req.session.permiso = rol.permiso;
                             req.session.save();
+                            res.render('index.html',{session: req.session})
                             }
                         )
 
                     }
                     else {
                         console.log("contraseña erronea");
+                        res.render('login.html');
                     }
                 }
                 else {
                     console.log("error de usuario");
+                    res.render('login.html');
                 }
             });
         }
 
         catch (ex) {
             console.log("error de usuario");
+            res.render('login.html');
         }
     }
     else{
@@ -76,13 +77,11 @@ app.post("/login", function (req,res,next) {
         req.session.permiso="ADMIN";
         req.session.save();
         console.log("adminop");
+        res.render('index.html',{session: req.session});
     }
 
-    res.redirect("/");
+    //res.redirect("/");
 });
 
-app.get("/:nombre",function (req,res) {
-    res.render('index.html', { title: req.params.nombre})
-})
 
 module.exports = app;
