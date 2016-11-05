@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1>Se han agregado los siguientes datos</h1>
+<h1>Datos de la tabla Encuestados</h1>
 
 <table class="table">
     <thead>
@@ -20,15 +20,15 @@
     <% for (var i= 0;i<datos.length;i++){ %>
     <tbody>
     <tr>
-        <td><%= datos[i][0]%></td>
-        <td><%= datos[i][1]%></td>
-        <td><%= datos[i][2] %></td>
-        <td><%= datos[i][3] %></td>
+        <td><%= datos[i].nombre%></td>
+        <td><%= datos[i].apellido%></td>
+        <td><%= datos[i].numero %></td>
+        <td><%= datos[i].estado %></td>
     </tr>
     <% }%>
     </tbody>
 </table>
-<form action="/CargarArchivo" method="GET">
+<form action="/" method="GET">
     <button type="submit">Volver</button>
 </form>
 

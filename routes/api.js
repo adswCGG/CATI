@@ -19,28 +19,31 @@ router.get("/logout",function (req,res) {
         req.session.destroy();
     }
     res.redirect("/")
-})
+});
 
-
-router.get("/usuarios", function (req,res) {
-    if (req.session.permiso == "ADMIN") {
-        models.User.findAll().then(function (user) {
-            res.render('users.html', {resultado: user});
-        });
+router.get("/baseDatos",function (req,res) {
+    if(req.session.permiso == "ADMIN") {
+        models.Dato.findAll().then(function (dato){
+            res.render('tabla.html',{datos: dato});
+        })
     }
     else {
         res.redirect("/");
     }
 });
 
-router.get("/CreateUser",function (req,res) {
-    if(req.session.permiso=="ADMIN") {
-        res.render("CreateUser.html");
+
+router.get("/usuarios", function (req,res) {
+    if (req.session.permiso == "ADMIN") {
+        models.User.findAll().then(function (user) {
+            res.render('users.html', {resultado: user});
+        })
     }
-    else{
+    else {
         res.redirect("/");
     }
 });
+
 
 router.post("/usuarios", function (req,res) {
     models.User.create({
@@ -101,43 +104,19 @@ router.post('/usuarios/:id',function(req,res) {
     else if (req.body.method == "DELETE") {
         models.User.destroy({where: {id: req.params.id}}).then(function (user) {
             return models.User.findAll().then(function (user) {
-                res.redirect("/")
+                res.redirect("/");
             })
         })
     }
 });
 
 
-router.post("/usuarios", function (req,res) {
-    models.User.create({
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email
-    }).then(function (result) {
-        models.Rol.create({
-            permiso: req.body.permiso,
-            UsuarioId: result.id
-        });
-        res.redirect("/");
-    });
-});
-
-router.get("/CargarArchivo", function (req,res) {
-    if(req.session.permiso=="ADMIN") {
-        res.render("CargarArchivo.html");
-    }
-    else{
-        res.redirect("/");
-    }
-
-});
 
 router.post("/CargarArchivo", function (req,res) {
     fs.readFile(req.body.archivo.path,'utf8',function read(err,allText) {
         if (err){
             throw err;
         }
-
         var allTextLines = allText.split(/\r\n|\n/);
         var headers = allTextLines[0].split(',');
         var lines = [];
@@ -159,7 +138,7 @@ router.post("/CargarArchivo", function (req,res) {
                 estado: lines[i][3]
             })
         }
-        console.log(req.body.archivo.path)
+        console.log(req.body.archivo.path);
         res.render("MostrarDatos.html", {datos: lines} );
     })
 });

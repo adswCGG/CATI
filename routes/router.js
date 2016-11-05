@@ -7,7 +7,9 @@ var fs = require('fs');
 app.use(bodyParser.urlencoded({extended: true }));
 app.use(bodyParser.json());
 
-
+app.get("/Call",function (req,res) {
+    res.render("Call.html", {numero: "echo123"});
+});
 
 app.get("/",function (req,res) {
     if(req.session.name!=null) {
@@ -15,19 +17,33 @@ app.get("/",function (req,res) {
     }else{
         res.render('login.html');
     }
-})
+});
 
 app.get("/usuarios",function (req,res) {
     res.redirect("api/usuarios")
-})
-
-app.get("/CreateUser",function (req,res) {
-    res.redirect('api/CreateUser')
-})
+});
 
 app.get("/modificar/:id",function (req,res) {
     res.render("Modificar.html",{id: req.params.id})
-})
+});
+
+app.get("/CreateUser",function (req,res) {
+    if(req.session.permiso=="ADMIN") {
+        res.render("CreateUser.html");
+    }
+    else{
+        res.redirect("/");
+    }
+});
+
+app.get("/CargarArchivo", function (req,res) {
+    if(req.session.permiso=="ADMIN") {
+        res.render("CargarArchivo.html");
+    }
+    else{
+        res.redirect("/");
+    }
+});
 
 app.get("/login",function (req,res) {
     if(!req.session.name) {
@@ -36,7 +52,7 @@ app.get("/login",function (req,res) {
     else{
         res.redirect("/")
     }
-})
+});
 
 app.post("/login", function (req,res) {
     if(req.body.username!=="ADMIN") {
@@ -46,7 +62,6 @@ app.post("/login", function (req,res) {
                     if (req.body.password == user.password) {
                         req.session.name = user.username;
                         req.session.save();
-                        console.log(req.session.name)
                         models.Rol.find({where: {UserId: user.id}}).then(function (rol){
                             req.session.permiso = rol.permiso;
                             req.session.save();
