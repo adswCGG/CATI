@@ -1,15 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 <head>
     <meta charset="UTF-8">
     <title>Llamadas</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script>
+        var myApp=angular.module("myApp", []);
+        myApp.config(['$compileProvider',function($compileProvider) {
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|skype):/);
+        }
+        ]);
+        myApp.controller("PrimerController",function ($scope,$http) {
+            $scope.users = [];
+            $scope.formData={};
+            $http.get('/api/baseDatosLlamar')
+                    .success(function(data){
+                        $scope.users = data;
+                    })
+            $scope.estadoSi=function (id) {
+                $scope.formData.text="si";
+                $http.post('/api/baseDatosLlamar/'+id,$scope.formData)
+                        .success(function (data) {
+                            $scope.formData={};
+                            $http.get('/api/baseDatosLlamar')
+                                    .success(function(data){
+                                        $scope.users = data;
+                                    })
+                        })
+            }
+            $scope.estadoDist=function (id) {
+                $http.post('/api/baseDatosLlamar/'+id,$scope.formData)
+                        .success(function (data) {
+                            $scope.formData={};
+                            $http.get('/api/baseDatosLlamar')
+                                    .success(function(data){
+                                        $scope.users = data;
+                                    })
+                        })
+            }
+        });
+
+    </script>
 </head>
-<body>
-<h1>Hola</h1>
-<!-- <a href="skype:echo123?call">Click</a> -->
+<body ng-controller="PrimerController">
+<p>Nombre: {{users[0].nombre}} {{users[0].apellido}}</p>
+<p>Numero: {{users[0].numero}}</p>
+<p>Estado: {{users[0].estado}}</p>
 
-
-
+<div>
+<a href="skype:{{users[0].numero}}?call">Llamar</a>
+    <form>
+        <button ng-click="estadoSi(users[0].id)">
+            Encuesta Completada
+        </button>
+    </form>
+</div>
+<form>
+    <div>
+        <input type="text" placeholder="Estado comentado" ng-model="formData.text">
+    </div>
+    <button ng-click="estadoDist(users[0].id)">
+        Ingresar Estado
+    </button>
+</form>
+<form action="/" method="GET">
+    <button type="submit">Volver</button>
+</form>
 </body>
 </html>

@@ -21,6 +21,26 @@ router.get("/logout",function (req,res) {
     res.redirect("/")
 });
 
+router.get("/baseDatosLlamar",function (req,res) {
+        models.Dato.findAll({
+            where: {
+                estado: {
+                    ne: "si"
+                }
+        }
+    }).then(function (dato){
+            res.json(dato);
+        })
+});
+router.post('/baseDatosLlamar/:id',function(req,res) {
+    models.Dato.find({where: {id: req.params.id}}).then(function (user) {
+        user.updateAttributes({
+            estado: req.body.text
+        });
+            res.json(user);
+    });
+})
+
 router.get("/baseDatos",function (req,res) {
     if(req.session.permiso == "ADMIN") {
         models.Dato.findAll().then(function (dato){
