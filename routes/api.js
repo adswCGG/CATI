@@ -52,6 +52,38 @@ router.get("/baseDatos",function (req,res) {
     }
 });
 
+router.get("/Proyecto",function (req,res) {
+    models.Proyect.findAll().then(function (proyect) {
+        res.render('proyects.html',{resultado: proyect});
+    })
+});
+
+router.post("/Proyect",function (req,res) {
+    models.Proyect.create({
+        nombre: req.body.nombre
+    });
+    res.redirect("/");
+});
+
+router.post('/Proyect/:id',function(req,res) {
+    if (req.body.method == "PUT") {
+        models.Proyect.find({where: {id: req.params.id}}).then(function (proyect) {
+            proyect.updateAttributes({
+                nombre: req.body.nombre
+            }).then(function (result) {
+                res.redirect("/");
+            })
+        })
+    }
+    else if (req.body.method == "DELETE") {
+        models.Proyect.destroy({where: {id: req.params.id}}).then(function (proyect) {
+            return models.Proyect.findAll().then(function (proyect) {
+                res.redirect("/");
+            })
+        })
+    }
+});
+
 
 router.get("/usuarios", function (req,res) {
     if (req.session.permiso == "ADMIN") {

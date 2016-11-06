@@ -36,6 +36,14 @@ app.get("/CreateUser",function (req,res) {
     }
 });
 
+app.get("/updateProyect/:id",function (req, res) {
+    res.render("updateProyect.html",{id: req.params.id})
+});
+
+app.get("/CreateProyect",function (req,res) {
+    res.render("CreateProyect.html");
+});
+
 app.get("/CargarArchivo", function (req,res) {
     if(req.session.permiso=="ADMIN") {
         res.render("CargarArchivo.html");
@@ -44,6 +52,11 @@ app.get("/CargarArchivo", function (req,res) {
         res.redirect("/");
     }
 });
+
+app.post("/CargarArchivo", function (req,res) {
+    console.log(req.body.idProyect)
+    res.render("CargarArchivo.html",{id: req.body.idProyecto})
+})
 
 app.get("/login",function (req,res) {
     if(!req.session.name) {
