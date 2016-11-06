@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modificar Proyecto</title>
+</head>
+<body>
+<form action="/api/Proyect/<%=id%>" method="POST">
+    <fieldset>
+        <div>
+            <label>Nombre</label>
+        </div>
+        <input type="text" name = "nombre" placeholder="Nombre">
+        <div>
+            <input type="hidden" name="method" value="PUT">
+            <button type="submit" >Submit</button>
+        </div>
+    </fieldset>
+</form>
+
+</body>
+</html>
