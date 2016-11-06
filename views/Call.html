@@ -45,36 +45,35 @@
         });
 
     </script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
 </head>
+<style>
+    p.capitalize { text-transform: capitalize; }
+    body         { padding-top:80px; }
+</style>
 <body ng-controller="PrimerController">
-<p>Nombre: {{users[0].nombre}} {{users[0].apellido}}</p>
-<p>Numero: {{users[0].numero}}</p>
 
-<div>
-<a href="skype:{{users[0].numero}}?call">Llamar</a>
-</div>
-    <table>
-        <tr>
-            <td>
-    <form>
-        <button ng-click="estadoSi(users[0].id)">
-            Encuesta Completada
-        </button>
-    </form>
-</td>
-            <td>
-    <div>
-        <input type="text" placeholder="Estado comentado" ng-model="formData.text">
-    </div>
-    <button ng-click="estadoDist(users[0].id)">
-        Ingresar Estado
+<div class="container">
+    <p class = "capitalize">Nombre: {{users[0].nombre}} {{users[0].apellido}}</p>
+    <p>Numero: {{users[0].numero}}</p>
+    <a href="skype:{{users[0].numero}}?call" class="btn btn-success btn-lg">Llamar</a>
+    <button ng-click="estadoSi(users[0].id)" class="btn btn-info btn-lg">
+        Encuesta Completada
     </button>
+</div>
+<div class="container">
+        <div>
+            <input type="text" placeholder="Estado comentado" ng-model="formData.text">
+        </div>
+        <button ng-click="estadoDist(users[0].id)">
+            Ingresar Estado
+        </button>
+    <hr>
+    <form action="/" method="GET">
+        <button type="submit" class="btn btn-info">Volver</button>
     </form>
-            </td>
-        </tr>
-    </table>
-<form action="/" method="GET">
-    <button type="submit">Volver</button>
-</form>
+
+</div>
 </body>
 </html>
