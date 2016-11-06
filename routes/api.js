@@ -21,22 +21,19 @@ router.get("/logout",function (req,res) {
     res.redirect("/")
 });
 
-router.get("/baseDatosLlamar",function (req,res) {
-    console.log(req.body.Proyect)
+router.post("/baseDatosLlamar",function (req,res) {
         models.ProyectDato.findAll({
             where: {
                 estado:  "no"
                 ,
-                ProyectId: 1
+                ProyectId: req.body.id
         }
     }).then(function (dato) {
-            console.log(dato)
             ids = [];
             for (var i = 0; i < dato.length; i++) {
                 ids.push(dato[i].DatoId);
             }
             models.Dato.findAll({where: {id: {in: ids}}, include: [models.ProyectDato]}).then(function (datoFin) {
-                console.log(datoFin)
                 res.json(datoFin);
             })
         })
@@ -53,7 +50,6 @@ router.post('/baseDatosLlamar/:id',function(req,res) {
 
 router.post("/baseDatos",function (req,res) {
     if(req.session.permiso == "ADMIN") {
-        console.log(req.body.idProyect)
         models.ProyectDato.findAll({where: {ProyectId: req.body.idProyect}}).then(function (dato){
             ids=[];
             estados=[];
@@ -64,7 +60,6 @@ router.post("/baseDatos",function (req,res) {
                 estados.push(dato[i].estado);
             }
             models.Dato.findAll({where: {id:{in: ids }},include:[models.ProyectDato]  }).then(function (datoFin) {
-                console.log(datoFin[1].ProyecDato)
                 res.render('tabla.html',{datos: datoFin,});
             })
 
@@ -78,6 +73,12 @@ router.post("/baseDatos",function (req,res) {
 router.get("/Proyecto",function (req,res) {
     models.Proyect.findAll().then(function (proyect) {
         res.render('proyects.html',{resultado: proyect});
+    })
+});
+
+router.get("/Proyect",function (req,res) {
+    models.Proyect.findAll().then(function (proyect) {
+        res.json(proyect);
     })
 });
 

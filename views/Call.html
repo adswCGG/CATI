@@ -12,31 +12,39 @@
         ]);
         myApp.controller("PrimerController",function ($scope,$http) {
             $scope.users = [];
-            $scope.formData={};
-            $http.get('/api/baseDatosLlamar')
+            $scope.formData = {id: 1};
+            $scope.Proyects=[];
+            $http.post('/api/baseDatosLlamar',$scope.formData)
                     .success(function(data){
                         $scope.users = data;
-                        $scope.formData.id = 1;
+                        $http.get('/api/Proyect')
+                                .success(function (data) {
+                                    $scope.Proyects=data;
+                                })
                     })
             $scope.cambiarProyect=function (id) {
-                $scope.formData.id = id;
-            }
+                $scope.formData.id = id
+                $http.post('/api/baseDatosLlamar',$scope.formData)
+                        .success(function(data){
+                            $scope.users = data;
+                        })
+            };
             $scope.estadoSi=function (id) {
                 $scope.formData.text="si";
                 $http.post('/api/baseDatosLlamar/'+id,$scope.formData)
                         .success(function (data) {
                             $scope.formData.text={};
-                            $http.get('/api/baseDatosLlamar')
+                            $http.post('/api/baseDatosLlamar',$scope.formData)
                                     .success(function(data){
                                         $scope.users = data;
                                     })
                         })
-            }
+            };
             $scope.estadoDist=function (id) {
                 $http.post('/api/baseDatosLlamar/'+id,$scope.formData)
                         .success(function (data) {
                             $scope.formData.text={};
-                            $http.get('/api/baseDatosLlamar')
+                            $http.post('/api/baseDatosLlamar',$scope.formData)
                                     .success(function(data){
                                         $scope.users = data;
                                     })
@@ -54,6 +62,13 @@
 </style>
 <body ng-controller="PrimerController">
 
+<div class="container" >
+    Escoja Proyecto
+        <div  ng-repeat="proyect in Proyects">
+    <button ng-click="cambiarProyect(proyect.id)"> {{proyect.nombre}}</button>
+        </div>
+</div>
+
 <div class="container">
     <p class = "capitalize">Nombre: {{users[0].nombre}} {{users[0].apellido}}</p>
     <p>Numero: {{users[0].numero}}</p>
@@ -67,12 +82,13 @@
             <input type="text" placeholder="Estado comentado" ng-model="formData.text">
         </div>
         <button ng-click="estadoDist(users[0].id)">
-            Ingresar Estado
+            Ingresar Estado manual
         </button>
     <hr>
     <form action="/" method="GET">
         <button type="submit" class="btn btn-info">Volver</button>
     </form>
+
 
 </div>
 </body>
