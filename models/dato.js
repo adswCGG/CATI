@@ -9,6 +9,12 @@ module.exports = function (sequelize, DataTypes) {
         estado: DataTypes.STRING,
         numero: DataTypes.STRING
 
+    } , {
+        classMethods: {
+            associate: function(models){
+                Dato.hasMany(models.ProyectDato)
+            }
+        }
     });
     return Dato;
 }
