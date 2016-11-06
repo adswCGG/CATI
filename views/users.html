@@ -13,6 +13,7 @@
 
 </head>
 <body>
+<div class="container">
 <h1>Lista de usuarios</h1>
 
 <table class="table">
@@ -34,11 +35,11 @@
         <td><%= resultado[i].email %></td>
         <td>
             <form action="/modificar/<%=resultado[i].id%>" method="GET">
-                <input type="submit" value="modificar">
+                <input type="submit" value="modificar" class="btn btn-warning btn-xs">
             </form>
             <form action="/api/usuarios/<%=resultado[i].id%>" method="POST">
                 <input type="hidden" value="DELETE" name="method">
-                <input type="submit" value="eliminar">
+                <input type="submit" value="eliminar" class="btn btn-danger btn-xs">
             </form>
         </td>
     </tr>
@@ -46,7 +47,8 @@
     </tbody>
 </table>
 <form action="/" method="GET">
-    <button type="submit">Volver</button>
+    <button type="submit" class="btn btn-info">Volver</button>
 </form>
+</div>
 </body>
 </html>
