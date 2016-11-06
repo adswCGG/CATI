@@ -22,29 +22,52 @@ router.get("/logout",function (req,res) {
 });
 
 router.get("/baseDatosLlamar",function (req,res) {
-        models.Dato.findAll({
+    console.log(req.body.Proyect)
+        models.ProyectDato.findAll({
             where: {
-                estado: {
-                    ne: "si"
-                }
+                estado:  "no"
+                ,
+                ProyectId: 1
         }
-    }).then(function (dato){
-            res.json(dato);
+    }).then(function (dato) {
+            console.log(dato)
+            ids = [];
+            for (var i = 0; i < dato.length; i++) {
+                ids.push(dato[i].DatoId);
+            }
+            models.Dato.findAll({where: {id: {in: ids}}, include: [models.ProyectDato]}).then(function (datoFin) {
+                console.log(datoFin)
+                res.json(datoFin);
+            })
         })
+
 });
 router.post('/baseDatosLlamar/:id',function(req,res) {
-    models.Dato.find({where: {id: req.params.id}}).then(function (user) {
-        user.updateAttributes({
+    models.ProyectDato.find({where: {ProyectId: req.body.id, DatoId:req.params.id}}).then(function (dato) {
+        dato.updateAttributes({
             estado: req.body.text
         });
-            res.json(user);
+            res.json(dato);
     });
-})
+});
 
-router.get("/baseDatos",function (req,res) {
+router.post("/baseDatos",function (req,res) {
     if(req.session.permiso == "ADMIN") {
-        models.Dato.findAll().then(function (dato){
-            res.render('tabla.html',{datos: dato});
+        console.log(req.body.idProyect)
+        models.ProyectDato.findAll({where: {ProyectId: req.body.idProyect}}).then(function (dato){
+            ids=[];
+            estados=[];
+            for (var i=0; i<dato.length; i++) {
+                    ids.push(dato[i].DatoId);
+            }
+            for (var i=0; i<dato.length; i++) {
+                estados.push(dato[i].estado);
+            }
+            models.Dato.findAll({where: {id:{in: ids }},include:[models.ProyectDato]  }).then(function (datoFin) {
+                console.log(datoFin[1].ProyecDato)
+                res.render('tabla.html',{datos: datoFin,});
+            })
+
         })
     }
     else {
@@ -188,6 +211,12 @@ router.post("/CargarArchivo", function (req,res) {
                 apellido: lines[i][1],
                 numero: lines[i][2],
                 estado: lines[i][3]
+            }).then(function (dato,i) {
+                models.ProyectDato.create({
+                    DatoId: dato.id,
+                    ProyectId: req.body.id,
+                    estado: dato.estado
+                })
             })
         }
         console.log(req.body.archivo.path);

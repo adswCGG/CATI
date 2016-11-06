@@ -16,12 +16,16 @@
             $http.get('/api/baseDatosLlamar')
                     .success(function(data){
                         $scope.users = data;
+                        $scope.formData.id = 1;
                     })
+            $scope.cambiarProyect=function (id) {
+                $scope.formData.id = id;
+            }
             $scope.estadoSi=function (id) {
                 $scope.formData.text="si";
                 $http.post('/api/baseDatosLlamar/'+id,$scope.formData)
                         .success(function (data) {
-                            $scope.formData={};
+                            $scope.formData.text={};
                             $http.get('/api/baseDatosLlamar')
                                     .success(function(data){
                                         $scope.users = data;
@@ -31,7 +35,7 @@
             $scope.estadoDist=function (id) {
                 $http.post('/api/baseDatosLlamar/'+id,$scope.formData)
                         .success(function (data) {
-                            $scope.formData={};
+                            $scope.formData.text={};
                             $http.get('/api/baseDatosLlamar')
                                     .success(function(data){
                                         $scope.users = data;
@@ -45,24 +49,30 @@
 <body ng-controller="PrimerController">
 <p>Nombre: {{users[0].nombre}} {{users[0].apellido}}</p>
 <p>Numero: {{users[0].numero}}</p>
-<p>Estado: {{users[0].estado}}</p>
 
 <div>
 <a href="skype:{{users[0].numero}}?call">Llamar</a>
+</div>
+    <table>
+        <tr>
+            <td>
     <form>
         <button ng-click="estadoSi(users[0].id)">
             Encuesta Completada
         </button>
     </form>
-</div>
-<form>
+</td>
+            <td>
     <div>
         <input type="text" placeholder="Estado comentado" ng-model="formData.text">
     </div>
     <button ng-click="estadoDist(users[0].id)">
         Ingresar Estado
     </button>
-</form>
+    </form>
+            </td>
+        </tr>
+    </table>
 <form action="/" method="GET">
     <button type="submit">Volver</button>
 </form>

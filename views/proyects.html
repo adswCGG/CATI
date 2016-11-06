@@ -28,8 +28,15 @@
         <td><%= resultado[i].id%></td>
         <td><%= resultado[i].nombre%></td>
         <td>
+            <table>
+                <tbody>
             <form action="/updateProyect/<%=resultado[i].id%>" method="GET">
                 <input type="submit" value="modificar">
+            </form>
+            <form action="/api/baseDatos" method="POST">
+                <input type="hidden" value="<%=resultado[i].id%>" name="idProyect">
+                <input type="submit" value="Ver datos">
+            </form>
             <form action="/CargarArchivo" method="POST">
                 <input type="hidden" value="<%=resultado[i].id%>" name="idProyect">
                 <input type="submit" value="Cargar Datos">
@@ -38,6 +45,8 @@
                 <input type="hidden" value="DELETE" name="method">
                 <input type="submit" value="eliminar">
             </form>
+            </tbody>
+            </table>
         </td>
     </tr>
     <% }%>

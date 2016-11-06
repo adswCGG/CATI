@@ -54,8 +54,7 @@ app.get("/CargarArchivo", function (req,res) {
 });
 
 app.post("/CargarArchivo", function (req,res) {
-    console.log(req.body.idProyect)
-    res.render("CargarArchivo.html",{id: req.body.idProyecto})
+    res.render("CargarArchivo.html",{id: req.body.idProyect})
 })
 
 app.get("/login",function (req,res) {

@@ -5,7 +5,7 @@
 var Sequelize = require("sequelize");
 module.exports=function (sequelize,DataTypes) {
     var ProyectDato = sequelize.define("ProyectDato", {
-
+        estado: DataTypes.STRING
     } , {
         classMethods :{
             associate: function (models) {
@@ -17,9 +17,7 @@ module.exports=function (sequelize,DataTypes) {
                 })
                 ProyectDato.belongsTo(models.Dato,{
                     onDelete: "CASCADE",
-                    foreignKey:{
-                        allowNull: false
-                    }
+                    foreignKey: "DatoId"
                 })
             }
         }

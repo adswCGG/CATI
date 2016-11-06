@@ -6,8 +6,8 @@ module.exports = function (sequelize, DataTypes) {
     var Dato = sequelize.define("Dato", {
         nombre: DataTypes.STRING,
         apellido: DataTypes.STRING,
-        estado: DataTypes.STRING,
-        numero: DataTypes.STRING
+        numero: DataTypes.STRING,
+        estado: DataTypes.STRING
 
     } , {
         classMethods: {
