@@ -13,6 +13,21 @@
 
 </head>
 <body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Inicio</a>
+    </div>
+</nav>
+
 <div class="container">
 <h1>Lista de Proyectos</h1>
 
@@ -32,19 +47,19 @@
             <table>
                 <tbody>
             <form action="/updateProyect/<%=resultado[i].id%>" method="GET">
-                <input type="submit" value="modificar">
+                <input type="submit" value="modificar" class="btn btn-warning btn-xs">
             </form>
             <form action="/api/baseDatos" method="POST">
                 <input type="hidden" value="<%=resultado[i].id%>" name="idProyect">
-                <input type="submit" value="Ver datos">
+                <input type="submit" value="Ver datos" class="btn btn-info btn-xs">
             </form>
             <form action="/CargarArchivo" method="POST">
                 <input type="hidden" value="<%=resultado[i].id%>" name="idProyect">
-                <input type="submit" value="Cargar Datos">
+                <input type="submit" value="Cargar Datos" class="btn btn-success btn-xs">
             </form>
             <form action="/api/Proyect/<%=resultado[i].id%>" method="POST">
                 <input type="hidden" value="DELETE" name="method">
-                <input type="submit" value="eliminar">
+                <input type="submit" value="eliminar" class="btn btn-danger btn-xs">
             </form>
             </tbody>
             </table>
@@ -55,7 +70,7 @@
 </table>
 <hr>
 <form action="/" method="GET">
-    <button type="submit" class="btn btn-info">Volver</button>
+    <button type="submit" class="btn btn-primary">Volver</button>
 </form>
 </div>
 </body>

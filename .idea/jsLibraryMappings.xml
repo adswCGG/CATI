@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+<<<<<<< HEAD
+    <file url="file://$PROJECT_DIR$" libraries="{Proyecto/node_modules}" />
+=======
+    <file url="file://$PROJECT_DIR$" libraries="{CATI/node_modules}" />
+>>>>>>> ee96475be43fe1cfab8072640b2824cba80e3884
+  </component>
+</project>
