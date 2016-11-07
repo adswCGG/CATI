@@ -212,7 +212,7 @@ router.post("/CargarArchivo", function (req,res) {
                 apellido: lines[i][1],
                 numero: lines[i][2],
                 estado: lines[i][3]
-            }).then(function (dato,i) {
+            }).then(function (dato) {
                 models.ProyectDato.create({
                     DatoId: dato.id,
                     ProyectId: req.body.id,
