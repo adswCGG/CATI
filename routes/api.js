@@ -13,8 +13,6 @@ var fs = require("fs");
 app.use(bodyParser.urlencoded({extended: true }));
 app.use(bodyParser.json());
 
-
-<<<<<<< HEAD
 router.get("/logout",function (req,res) {
     if(req.session.name){
         req.session.destroy();
@@ -41,13 +39,13 @@ router.post("/baseDatosLlamar",function (req,res) {
 
 });
 router.post('/baseDatosLlamar/:id',function(req,res) {
-    models.ProyectDato.find({where: {ProyectId: req.body.id, DatoId:req.params.id}}).then(function (dato) {
+    models.ProyectDato.find({where: {ProyectId: req.body.id, DatoId: req.params.id}}).then(function (dato) {
         dato.updateAttributes({
             estado: req.body.text
         });
-            res.json(dato);
+        res.json(dato);
     });
-=======
+});
 router.get("/usuarios", function (req,res) {
     if(req.session.permiso=="ADMIN") {
         models.User.findAll().then(function (user) {
@@ -57,7 +55,6 @@ router.get("/usuarios", function (req,res) {
     else{
         res.redirect("/");
     }
->>>>>>> master
 });
 
 router.post("/baseDatos",function (req,res) {
@@ -167,22 +164,16 @@ router.post('/usuarios/:id',function(req,res) {
                     user.updateAttributes({
                         username: req.body.username,
                         email: req.body.email
-<<<<<<< HEAD
+
                     }).then(function (result) {
-=======
-                    }).then(function () {
->>>>>>> master
                         res.redirect("/");
                     })
                 }
                 else {
                     user.updateAttributes({
                         username: req.body.username
-<<<<<<< HEAD
                     }).then(function (result) {
-=======
-                    }).then(function () {
->>>>>>> master
+
                         res.redirect("/");
                     })
                 }
@@ -191,26 +182,16 @@ router.post('/usuarios/:id',function(req,res) {
             else if(req.body.email){
                 user.updateAttributes({
                     email: req.body.email
-<<<<<<< HEAD
                 }).then(function (result){
-=======
-                }).then(function (){
->>>>>>> master
                     res.redirect("/");
                 })
             }
             })
         }
     else if (req.body.method == "DELETE") {
-<<<<<<< HEAD
         models.User.destroy({where: {id: req.params.id}}).then(function (user) {
             return models.User.findAll().then(function (user) {
                 res.redirect("/");
-=======
-        models.User.destroy({where: {id: req.params.id}}).then(function () {
-            return models.User.findAll().then(function () {
-                res.redirect("/")
->>>>>>> master
             })
         })
     }
@@ -242,8 +223,7 @@ router.post("/CargarArchivo", function (req,res) {
                 apellido: lines[i][1],
                 numero: lines[i][2],
                 estado: lines[i][3]
-<<<<<<< HEAD
-            }).then(function (dato,i) {
+            }).then(function (dato) {
                 models.ProyectDato.create({
                     DatoId: dato.id,
                     ProyectId: req.body.id,
@@ -252,11 +232,6 @@ router.post("/CargarArchivo", function (req,res) {
             })
         }
         console.log(req.body.archivo.path);
-=======
-            })
-        }
-        console.log(req.body.archivo.path)
->>>>>>> master
         res.render("MostrarDatos.html", {datos: lines} );
     })
 });

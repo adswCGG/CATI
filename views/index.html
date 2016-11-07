@@ -42,22 +42,9 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuarios <span class="caret"></span></a>
           <ul class="dropdown-menu">
-<<<<<<< HEAD
             <li><a href="/usuarios">Ver Usuario</a></li>
             <li><a href="/createUser">Crear Usuario</a></li>
-=======
-            <% if (!user.name){ %>
-            <li><a href="/login">Iniciar Sesión</a></li>
-              <% } else if(user.permiso=="ADMIN") { %>
-            <li><a href="/usuarios">Ver Usuario</a></li>
-            <li><a href="/createUser">Crear Usuario</a></li>
-              <% } %>
-            <!--<li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>-->
->>>>>>> master
+
           </ul>
         </li>
       </ul>
@@ -73,25 +60,10 @@
         <% } %>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-<<<<<<< HEAD
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bienvenido <%= session.name %> <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="/api/logout">Cerrar Sesión</a></li>
-=======
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <% if (user.name){%> Bienvenido <%=user.name%> <% } else {%> Inicie sesion <%}%> <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-              <% if (user.name) { %>
-                <% if (user.permiso=="ADMIN") { %>
-              <li><a href="/api/CargarArchivo">Subir archivo</a></li>
-                <% } %>
-              <li><a href="/logout">Cerrar Sesión</a></li>
-             <% }else{  %>
-                <li><a href="/login"> Iniciar Sesión</a></li>
-                <%}%>
-            <!--<li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>-->
->>>>>>> master
+
           </ul>
         </li>
       </ul>

@@ -57,16 +57,13 @@ app.post("/CargarArchivo", function (req,res) {
     res.render("CargarArchivo.html",{id: req.body.idProyect})
 })
 
-app.get("/usuarios",function (req,res) {
-    res.redirect("api/usuarios");
-})
-
-app.get("/CreateUser",function (req,res) {
-    res.redirect('api/CreateUser');
-})
-
-app.get("/modificar/:id",function (req,res) {
-    res.render("Modificar.html",{id: req.params.id});
+app.get("/login",function (req,res) {
+    if(!req.session.name){
+        res.render("login.html")
+    }
+    else{
+        res.redirect("/")
+    }
 });
 
 app.post("/login", function (req,res) {
