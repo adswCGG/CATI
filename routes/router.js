@@ -12,7 +12,6 @@ app.get("/Call",function (req,res) {
 });
 
 app.get("/",function (req,res) {
-<<<<<<< HEAD
     if(req.session.name!=null) {
         res.render('index.html', {session: req.session});
     }else{
@@ -56,9 +55,6 @@ app.get("/CargarArchivo", function (req,res) {
 
 app.post("/CargarArchivo", function (req,res) {
     res.render("CargarArchivo.html",{id: req.body.idProyect})
-=======
-    console.log(req.session)
-    res.render('index.html',{user: req.session});
 })
 
 app.get("/usuarios",function (req,res) {
@@ -71,29 +67,7 @@ app.get("/CreateUser",function (req,res) {
 
 app.get("/modificar/:id",function (req,res) {
     res.render("Modificar.html",{id: req.params.id});
->>>>>>> master
-})
-
-app.get("/login",function (req,res) {
-    if(!req.session.name) {
-        res.render("login.html");
-    }
-    else{
-        res.redirect("/");
-    }
-<<<<<<< HEAD
 });
-=======
-})
-
-app.get("/logout",function (req,res) {
-    if(req.session.name){
-        req.session.destroy();
-    }
-    res.redirect("/");
-})
-
->>>>>>> master
 
 app.post("/login", function (req,res) {
     if(req.body.username!=="ADMIN") {
