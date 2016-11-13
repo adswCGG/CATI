@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
             classMethods: {
                 associate: function(models){
                     Proyect.hasMany(models.UserProyect)
-                    Proyect.hasMany(models.ProyectDato)
+                    Proyect.hasMany(models.Dato)
                     Proyect.hasMany(models.Encuesta)
                 }
             }

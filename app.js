@@ -10,8 +10,10 @@ app.use(session({
     secret: "123swcati098"
 }));
 app.use(formidable.parse());
+
+
 app.use("/",require('./routes/router.js'));
-app.use("/api",session_middleware);
+app.use("/",session_middleware);
 app.use('/api', require('./routes/api.js'));
 app.engine('html', require('ejs').renderFile);
 

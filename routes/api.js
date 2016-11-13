@@ -10,6 +10,7 @@ var fs = require("fs");
 
 
 
+
 app.use(bodyParser.urlencoded({extended: true }));
 app.use(bodyParser.json());
 
@@ -21,57 +22,30 @@ router.get("/logout",function (req,res) {
 });
 
 router.post("/baseDatosLlamar",function (req,res) {
-        models.ProyectDato.findAll({
+        models.Dato.findAll({
             where: {
                 estado:  "no"
                 ,
                 ProyectId: req.body.id
         }
     }).then(function (dato) {
-            ids = [];
-            for (var i = 0; i < dato.length; i++) {
-                ids.push(dato[i].DatoId);
-            }
-            models.Dato.findAll({where: {id: {in: ids}}, include: [models.ProyectDato]}).then(function (datoFin) {
-                res.json(datoFin);
-            })
+            res.json(dato)
         })
 
 });
 router.post('/baseDatosLlamar/:id',function(req,res) {
-    models.ProyectDato.find({where: {ProyectId: req.body.id, DatoId: req.params.id}}).then(function (dato) {
+    models.Dato.find({where: {ProyectId: req.body.id, Id: req.params.id}}).then(function (dato) {
         dato.updateAttributes({
             estado: req.body.text
         });
         res.json(dato);
     });
 });
-router.get("/usuarios", function (req,res) {
-    if(req.session.permiso=="ADMIN") {
-        models.User.findAll().then(function (user) {
-            res.render('users.html', {resultado: user, user: req.session});
-        });
-    }
-    else{
-        res.redirect("/");
-    }
-});
-
+// Ver tabla
 router.post("/baseDatos",function (req,res) {
     if(req.session.permiso == "ADMIN") {
-        models.ProyectDato.findAll({where: {ProyectId: req.body.idProyect}}).then(function (dato){
-            ids=[];
-            estados=[];
-            for (var i=0; i<dato.length; i++) {
-                    ids.push(dato[i].DatoId);
-            }
-            for (var i=0; i<dato.length; i++) {
-                estados.push(dato[i].estado);
-            }
-            models.Dato.findAll({where: {id:{in: ids }},include:[models.ProyectDato]  }).then(function (datoFin) {
-                res.render('tabla.html',{datos: datoFin,});
-            })
-
+        models.Dato.findAll({where: {ProyectId: req.body.idProyect}}).then(function (dato){
+                res.render('tabla.html',{datos: dato});
         })
     }
     else {
@@ -79,17 +53,19 @@ router.post("/baseDatos",function (req,res) {
     }
 });
 
+router.get("/Proyect",function (req,res) {
+    models.Proyect.findAll().then(function (proyect) {
+        res.json(proyect);
+    })
+});
+
+//CRUD proyecto
 router.get("/Proyecto",function (req,res) {
     models.Proyect.findAll().then(function (proyect) {
         res.render('proyects.html',{resultado: proyect});
     })
 });
 
-router.get("/Proyect",function (req,res) {
-    models.Proyect.findAll().then(function (proyect) {
-        res.json(proyect);
-    })
-});
 
 router.post("/Proyect",function (req,res) {
     models.Proyect.create({
@@ -117,7 +93,7 @@ router.post('/Proyect/:id',function(req,res) {
     }
 });
 
-
+//CRUD usuario
 router.get("/usuarios", function (req,res) {
     if (req.session.permiso == "ADMIN") {
         models.User.findAll().then(function (user) {
@@ -128,7 +104,6 @@ router.get("/usuarios", function (req,res) {
         res.redirect("/");
     }
 });
-
 
 router.post("/usuarios", function (req,res) {
     models.User.create({
@@ -198,7 +173,7 @@ router.post('/usuarios/:id',function(req,res) {
 });
 
 
-
+//Cargar datos---> agregar extensiones posibles y mejorar la pagina de subida
 router.post("/CargarArchivo", function (req,res) {
     fs.readFile(req.body.archivo.path,'utf8',function read(err,allText) {
         if (err){
@@ -217,18 +192,13 @@ router.post("/CargarArchivo", function (req,res) {
                 lines.push(tarr);
             }
         }
-        for(var i=0;i<lines.length;i++){
+        for(var j=0;j<lines.length;j++){
             models.Dato.create({
-                nombre: lines[i][0],
-                apellido: lines[i][1],
-                numero: lines[i][2],
-                estado: lines[i][3]
-            }).then(function (dato) {
-                models.ProyectDato.create({
-                    DatoId: dato.id,
-                    ProyectId: req.body.id,
-                    estado: dato.estado
-                })
+                nombre: lines[j][0],
+                apellido: lines[j][1],
+                numero: lines[j][2],
+                estado: lines[j][3],
+                ProyectId: req.body.id
             })
         }
         console.log(req.body.archivo.path);
