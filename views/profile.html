@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="profileApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Profile</title>
+
+    <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="/profileController.js"></script>
+
+</head>
+<body ng-controller="profileController" ng-init="init(<%=user%>)">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Inicio</a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <p>Nombre: {{userInf[0].username}}</p>
+    <p>Correo: {{userInf[0].email}}</p>
+    <p>Password: {{userInf[0].password}}</p>
+    <p>Permiso: </p>
+    <form action="/usuarios" method="GET">
+        <button type="submit" class="btn btn-primary">Volver</button>
+    </form>
+</div>
+</body>
+</html>

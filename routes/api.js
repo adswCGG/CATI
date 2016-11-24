@@ -13,14 +13,39 @@ var fs = require("fs");
 
 app.use(bodyParser.urlencoded({extended: true }));
 app.use(bodyParser.json());
-
+//logout
 router.get("/logout",function (req,res) {
     if(req.session.name){
         req.session.destroy();
     }
     res.redirect("/")
 });
+//Crear asignacion userProyect, json
+router.post("/userProyect/:id", function (req,res) {
+    models.UserProyect.create({
+        UserId: req.params.id,
+        ProyectId: req.body.idProyect
+    }).then(function (result) {
+        models.User.findAll({}).then(function (users) {
+            res.json(users);
+        })
+    });
+});
+//los usa userController--> editar para usar en profileController
+router.post("/usersProyect/:id", function (req,res) {
+    models.UserProyect.findAll({where:{ProyectId: req.params.id}}).then(function (result) {
+        res.render("usersProyect.html",{datos: result});
+    });
+});
 
+router.get("/userProyect",function (req,res) {
+    models.UserProyect.findAll().then(function (datos) {
+        res.json(datos)
+        })
+});
+
+
+//??????
 router.post("/baseDatosLlamar",function (req,res) {
         models.Dato.findAll({
             where: {
@@ -42,6 +67,7 @@ router.post('/baseDatosLlamar/:id',function(req,res) {
     });
 });
 // Ver tabla
+//ver datos de tabla
 router.post("/baseDatos",function (req,res) {
     if(req.session.permiso == "ADMIN") {
         models.Dato.findAll({where: {ProyectId: req.body.idProyect}}).then(function (dato){
@@ -52,7 +78,7 @@ router.post("/baseDatos",function (req,res) {
         res.redirect("/");
     }
 });
-
+//lo esta usando el userController, quita eso y cambialo por el de abajo
 router.get("/Proyect",function (req,res) {
     models.Proyect.findAll().then(function (proyect) {
         res.json(proyect);
@@ -60,13 +86,11 @@ router.get("/Proyect",function (req,res) {
 });
 
 //CRUD proyecto
-router.get("/Proyecto",function (req,res) {
-    models.Proyect.findAll().then(function (proyect) {
-        res.render('proyects.html',{resultado: proyect});
-    })
-});
+
+//obtener proyectos
 
 
+//Crear proyecto
 router.post("/Proyect",function (req,res) {
     models.Proyect.create({
         nombre: req.body.nombre
@@ -74,6 +98,7 @@ router.post("/Proyect",function (req,res) {
     res.redirect("/");
 });
 
+//editar, borrar proyecto, redirecciona
 router.post('/Proyect/:id',function(req,res) {
     if (req.body.method == "PUT") {
         models.Proyect.find({where: {id: req.params.id}}).then(function (proyect) {
@@ -84,27 +109,28 @@ router.post('/Proyect/:id',function(req,res) {
             })
         })
     }
-    else if (req.body.method == "DELETE") {
+    else if (req.body.text == "DELETE") {
         models.Proyect.destroy({where: {id: req.params.id}}).then(function (proyect) {
             return models.Proyect.findAll().then(function (proyect) {
-                res.redirect("/");
+                res.json(proyect);
             })
         })
     }
 });
 
 //CRUD usuario
+//Obtener todos los usuarios, angular
 router.get("/usuarios", function (req,res) {
     if (req.session.permiso == "ADMIN") {
         models.User.findAll().then(function (user) {
-            res.render('users.html', {resultado: user});
+            res.json(user);
         })
     }
     else {
         res.redirect("/");
     }
 });
-
+//Crear usuario
 router.post("/usuarios", function (req,res) {
     models.User.create({
         username: req.body.username,
@@ -119,18 +145,17 @@ router.post("/usuarios", function (req,res) {
     });
 });
 
-
-router.get('/usuarios/:id',function(req,res) {
-
+//obtener datos, angular
+router.get('/profile/:id',function(req,res) {
     models.User.findAll({
         where: {
             id: req.params.id
         }
     }).then(function (user) {
-        res.render('users.html', {title: 'Listar Usuarios', resultado: user});
+        res.json(user);
     });
 });
-
+//Editar y eliminar users,redirect
 router.post('/usuarios/:id',function(req,res) {
     if (req.body.method == "PUT") {
         models.User.find({where: {id: req.params.id}}).then(function (user) {
@@ -163,10 +188,10 @@ router.post('/usuarios/:id',function(req,res) {
             }
             })
         }
-    else if (req.body.method == "DELETE") {
+    else if (req.body.text == "DELETE") {
         models.User.destroy({where: {id: req.params.id}}).then(function (user) {
-            return models.User.findAll().then(function (user) {
-                res.redirect("/");
+            models.User.findAll().then(function (user) {
+                res.json(user);
             })
         })
     }

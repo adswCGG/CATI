@@ -8,7 +8,11 @@ app.use(bodyParser.urlencoded({extended: true }));
 app.use(bodyParser.json());
 
 app.get("/Call",function (req,res) {
-    res.render("Call.html", {numero: "echo123"});
+    if(req.session.name!=null) {
+        res.render("Call.html", {numero: "echo123"});
+    }else{
+        res.render('login.html');
+    }
 });
 
 app.get("/",function (req,res) {
@@ -18,22 +22,32 @@ app.get("/",function (req,res) {
         res.render('login.html');
     }
 });
-/*
-Editar app.get("/usuarios") para que res.render("user.html") y que el html tenga como funcion principal el
-mostrar usuarios del api/usuarios con angular + el resto
- */
-app.get("/usuarios",function (req,res) {
-    res.redirect("api/usuarios")
+
+app.post("/usuarios",function (req,res) {
+    if(req.session.name!=null){
+        res.render("profile.html",{user:req.body.id})
+    }else {
+        res.render("login.html")
+    }
 });
 
-app.get("/modificar/:id",function (req,res) {
+app.get("/usuarios",function (req,res) {
     if(req.session.name!=null) {
-        res.render("Modificar.html", {id: req.params.id})
-    }
-    else{
-        res.render('login.html');
+        res.render("users.html")
+    }else{
+        res.render('login.html')
     }
 });
+
+app.post("/modificar",function (req,res) {
+    if(req.session.name!=null) {
+        res.render("Modificar.html", {id: req.body.id})
+    }
+    else{
+        res.render('login.html')
+    }
+});
+
 
 app.get("/CreateUser",function (req,res) {
     if(req.session.permiso=="ADMIN") {
@@ -44,9 +58,17 @@ app.get("/CreateUser",function (req,res) {
     }
 });
 
-app.get("/updateProyect/:id",function (req, res) {
+app.get("/Proyecto",function (req,res) {
+    if(req.session.name!=null) {
+        res.render("proyects.html")
+    }else{
+        res.render('login.html')
+    }
+});
+
+app.post("/updateProyect",function (req, res) {
     if(req.session.permiso=="ADMIN") {
-        res.render("updateProyect.html", {id: req.params.id})
+        res.render("updateProyect.html", {id: req.body.id})
     }
     else{
         res.redirect("/");
