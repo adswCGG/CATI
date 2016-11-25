@@ -20,21 +20,16 @@ router.get("/logout",function (req,res) {
     }
     res.redirect("/")
 });
-//Crear asignacion userProyect, json
-router.post("/userProyect/:id", function (req,res) {
-    models.UserProyect.create({
-        UserId: req.params.id,
-        ProyectId: req.body.idProyect
-    }).then(function (result) {
-        models.User.findAll({}).then(function (users) {
-            res.json(users);
-        })
+
+//los usa userController--> agregar al reves para usar en profileController
+router.get("/usersProyect/:id", function (req,res) {
+    models.UserProyect.findAll({where:{UserId: req.params.id}}).then(function (result) {
+        res.json(result);
     });
 });
-//los usa userController--> editar para usar en profileController
-router.post("/usersProyect/:id", function (req,res) {
+router.get("/proyectUsers/:id", function (req,res) {
     models.UserProyect.findAll({where:{ProyectId: req.params.id}}).then(function (result) {
-        res.render("usersProyect.html",{datos: result});
+        res.json(result);
     });
 });
 
@@ -42,6 +37,53 @@ router.get("/userProyect",function (req,res) {
     models.UserProyect.findAll().then(function (datos) {
         res.json(datos)
         })
+});
+
+router.post('/userProyect/:id',function(req,res) {
+    if (req.body.text == "DELETE") {
+        models.UserProyect.destroy({where: {id: req.params.id}}).then(function (userProyect) {
+            return models.UserProyect.findAll().then(function (userProyect) {
+                res.json(userProyect);
+            })
+        })
+    }
+    else if(req.body.text=="Create"){
+        models.UserProyect.create({
+        UserId: req.params.id,
+        ProyectId: req.body.proyectId
+    }).then(function (result) {
+        models.UserProyect.findAll({}).then(function (userProyect) {
+            res.json(userProyect);
+        })
+    });
+    }
+
+});
+
+router.post('/proyectUsers/:id',function(req,res) {
+    if(req.body.text=="Create"){
+        models.UserProyect.create({
+            UserId: req.body.userId,
+            ProyectId: req.params.id
+        }).then(function (result) {
+            models.UserProyect.findAll().then(function (userProyect) {
+                res.json(userProyect);
+            })
+        });
+    }
+});
+
+//obtener datos tabla rol
+router.get("/Rol",function (req,res) {
+    models.Rol.findAll().then(function (datos) {
+        res.json(datos)
+    })
+});
+
+router.get("/Rol/:id",function (req,res) {
+    models.Rol.findAll({where:{UserId: req.params.id}}).then(function (datos) {
+        res.json(datos)
+    })
 });
 
 
@@ -88,7 +130,11 @@ router.get("/Proyect",function (req,res) {
 //CRUD proyecto
 
 //obtener proyectos
-
+router.get("/Proyect/:id",function (req,res) {
+    models.Proyect.findAll({where:{id:req.params.id}}).then(function (proyect) {
+        res.json(proyect)
+    })
+})
 
 //Crear proyecto
 router.post("/Proyect",function (req,res) {

@@ -66,6 +66,14 @@ app.get("/Proyecto",function (req,res) {
     }
 });
 
+app.post("/Proyect",function (req,res) {
+    if(req.session.name!=null){
+        res.render("profileProyect.html",{proyect:req.body.id})
+    }else {
+        res.render("login.html")
+    }
+});
+
 app.post("/updateProyect",function (req, res) {
     if(req.session.permiso=="ADMIN") {
         res.render("updateProyect.html", {id: req.body.id})

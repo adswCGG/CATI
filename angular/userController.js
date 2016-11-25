@@ -5,25 +5,22 @@ var userApp=angular.module("userApp", []);
 userApp.controller("UserController",function ($scope,$http) {
     $scope.users = [];
     $scope.formData = {text:""};
-    $scope.Proyects=[];
-    $scope.asd={};
+    $scope.Roles=[];
     $http.get('/api/usuarios')
         .success(function(data){
             $scope.users = data;
-            for(var i=0;i<data.length;i++) {
-                $scope.users[i].Proyects = [];
-            }
-            $http.get('/api/userProyect')
+            $http.get('/api/Rol')
                 .success(function (data) {
-                    $scope.asd=data
-                   for(var i=0;i<data.length ; i++){
-                       $scope.users[data[i].UserId].Proyects.push(data[i].ProyectId)
-                   }
+                    $scope.Roles=data;
+                    for(var i=0; i<$scope.users.length; i++){
+                        for(var j=0; j<$scope.Roles.length; j++){
+                            if($scope.users[i].id==$scope.Roles[j].UserId){
+                                $scope.users[i].permiso=$scope.Roles[j].permiso;
+                                break;
+                            }
+                        }
+                    }
                 });
-            $http.get('/api/Proyect')
-                .success(function (data) {
-                    $scope.Proyects=data;
-                })
         });
     $scope.delete = function (id) {
         $scope.formData.text="DELETE";
@@ -32,11 +29,5 @@ userApp.controller("UserController",function ($scope,$http) {
                 $scope.users = data;
             })
     };
-    $scope.asignar = function (id) {
-        $http.post('api/userProyect/'+id,$scope.formData)
-            .success(function (data) {
-                $scope.users = data;
-            })
-    }
 
 });

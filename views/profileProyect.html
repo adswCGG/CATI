@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="profileApp">
+<html lang="en" ng-app="profileProyApp">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-    <script src="/profileController.js"></script>
+    <script src="/profileProyectController.js"></script>
 
 </head>
-<body ng-controller="profileController" ng-init="init(<%=user%>)">
+<body ng-controller="profileProyController" ng-init="init(<%=proyect%>)">
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -29,37 +29,35 @@
     </div>
 </nav>
 <div class="container">
-    <p>Nombre: {{userInf[0].username}}</p>
-    <p>Correo: {{userInf[0].email}}</p>
-    <p>Password: {{userInf[0].password}}</p>
-    <p>Permiso: {{userInf[0].permiso}} </p>
-    <h2>Proyectos Asignados</h2>
+    <p>Nombre: {{proyectInf[0].nombre}}</p>
+    <p>Encuesta: nombre, ver</p>
+    <h2>Usuarios Asignados</h2>
     <table class="table">
         <thead>
         <tr>
-            <th> Proyecto </th>
+            <th> Nombre </th>
             <th> Encuestas realizadas</th>
             <th> Sacar </th>
         </tr>
         </thead>
-        <tbody ng-repeat="proyect in ProyectosAsignados">
+        <tbody ng-repeat="user in UsersAsignados">
         <tr>
-            <td>{{proyect.nombre}}</td>
+            <td>{{user.nombre}}</td>
             <td> No disponible</td>
             <td>
-                <button ng-click="delete(proyect.id)" class="btn btn-danger btn-xs">
+                <button ng-click="delete(user.id)" class="btn btn-danger btn-xs">
                     Eliminar Asignacion
                 </button>
             </td>
         </tr>
         </tbody>
     </table>
-    <label>Asignar a proyecto</label>
-    <select ng-model="formData.proyectId">
-        <option ng-repeat="proyect in ProyectosNoAsignados" value="{{proyect.id}}">{{proyect.nombre}}</option>
+    <label>Asignar usuarios</label>
+    <select ng-model="formData.userId">
+        <option ng-repeat="user in UsersNoAsignados" value="{{user.id}}">{{user.username}}</option>
     </select>
-    <input ng-click="Asignar(user)" type="submit" value="asignar" class="btn btn-warning btn-xs">
-    <form action="/usuarios" method="GET">
+    <input ng-click="Asignar(proyect)" type="submit" value="asignar" class="btn btn-warning btn-xs">
+    <form action="/Proyecto" method="GET">
         <button type="submit" class="btn btn-primary">Volver</button>
     </form>
 </div>

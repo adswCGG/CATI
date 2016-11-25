@@ -36,6 +36,7 @@
     <tr>
         <th> ID </th>
         <th> Username </th>
+        <th> Permiso </th>
         <th> Email </th>
         <th> Acciones </th>
     </tr>
@@ -43,7 +44,8 @@
     <tbody ng-repeat="user in users">
     <tr>
         <td>{{user.id}}</td>
-        <td>{{ user.username}}</td>
+        <td>{{user.username}}</td>
+        <td>{{user.permiso}}</td>
         <td>{{user.email }}</td>
         <td>
             <form action="/modificar" method="POST">
@@ -58,17 +60,6 @@
                 Eliminar
             </button>
 
-             <!--   <select  name="proyectlist" ng-model="formData.idProyect">
-                        <option ng-repeat="proyect in Proyects" value="{{proyect.id}}">{{proyect.nombre}}</option>
-                </select>
-                <input ng-click="asignar(user.id)" type="submit" value="asignar a proyecto" class="btn btn-warning btn-xs">
-
-        </td>
-        <td>
-            <div ng-repeat="proyect in user.Proyects">
-                {{proyect}}
-            </div>
-            -->
         </td>
     </tr>
     </tbody>
