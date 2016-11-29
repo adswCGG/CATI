@@ -4,7 +4,8 @@
 "use strict";
 module.exports = function (sequelize, DataTypes) {
     var Proyect = sequelize.define("Proyect", {
-        nombre: DataTypes.STRING
+        nombre: DataTypes.STRING,
+        URL: DataTypes.STRING
     } , {
             classMethods: {
                 associate: function(models){

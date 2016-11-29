@@ -138,9 +138,17 @@ router.get("/Proyect/:id",function (req,res) {
 
 //Crear proyecto
 router.post("/Proyect",function (req,res) {
-    models.Proyect.create({
-        nombre: req.body.nombre
-    });
+    if(req.body.url.slice(0,7)=="http://" || req.body.url.slice(0,8)=="https://") {
+        models.Proyect.create({
+            nombre: req.body.nombre,
+            URL: req.body.url
+        });
+    }else{
+        models.Proyect.create({
+            nombre: req.body.nombre,
+            URL: "http://"+req.body.url
+        });
+    }
     res.redirect("/");
 });
 

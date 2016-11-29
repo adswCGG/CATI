@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 app.get("/Call",function (req,res) {
     if(req.session.name!=null) {
-        res.render("Call.html", {numero: "echo123"});
+        res.render("Call.html", {UserId: req.session.UserId});
     }else{
         res.render('login.html');
     }
@@ -126,6 +126,7 @@ app.post("/login", function (req,res) {
                 if (user !== null) {
                     if (req.body.password == user.password) {
                         req.session.name = user.username;
+                        req.session.UserId = user.id;
                         req.session.save();
                         models.Rol.find({where: {UserId: user.id}}).then(function (rol){
                             req.session.permiso = rol.permiso;

@@ -7,22 +7,45 @@ myApp.config(['$compileProvider',function($compileProvider) {
 }
 ]);
 myApp.controller("PrimerController",function ($scope,$http) {
-    $scope.users = [];
-    $scope.formData = {id: 1};
-    $scope.Proyects=[];
-    $http.post('/api/baseDatosLlamar',$scope.formData)
-        .success(function(data){
-            $scope.users = data;
-            $http.get('/api/Proyect')
-                .success(function (data) {
-                    $scope.Proyects=data;
-                })
-        });
+    $scope.datos = [];
+    $scope.user = [];
+    $scope.formData = [];
+    $scope.Proyects = [];
+    $scope.URL = [];
+    $scope.init = function (id) {
+        $scope.user = id;
+        $http.get('/api/usersProyect/' + id)
+            .success(function (data) {
+                $scope.formData={"id": data[0].ProyectId};
+                $http.post('/api/baseDatosLlamar', $scope.formData)
+                    .success(function (data) {
+                        $scope.datos = data;
+                        $http.get('/api/Proyect')
+                            .success(function (data) {
+                                $scope.Proyects = data;
+                                for (var i = 0; i < $scope.Proyects.length; i++) {
+                                    if ($scope.datos[0].ProyectId == $scope.Proyects[i].id) {
+                                        $scope.URL = $scope.Proyects[i].URL;
+                                        break;
+                                    }
+                                }
+                            });
+                    });
+            });
+
+    };
     $scope.cambiarProyect=function (id) {
         $scope.formData.id = id;
         $http.post('/api/baseDatosLlamar',$scope.formData)
             .success(function(data){
-                $scope.users = data;
+                $scope.datos = data;
+                $scope.URL=[];
+                for(var i=0; i<$scope.Proyects.length; i++){
+                    if($scope.datos[0].ProyectId==$scope.Proyects[i].id) {
+                        $scope.URL = $scope.Proyects[i].URL;
+                        break;
+                    }
+                }
             })
     };
     $scope.estadoSi=function (id) {
@@ -32,7 +55,7 @@ myApp.controller("PrimerController",function ($scope,$http) {
                 $scope.formData.text="";
                 $http.post('/api/baseDatosLlamar',$scope.formData)
                     .success(function(data){
-                        $scope.users = data;
+                        $scope.datos = data;
                     })
             })
     };
@@ -42,7 +65,7 @@ myApp.controller("PrimerController",function ($scope,$http) {
                 $scope.formData.text="";
                 $http.post('/api/baseDatosLlamar',$scope.formData)
                     .success(function(data){
-                        $scope.users = data;
+                        $scope.datos = data;
                     })
             })
     }
