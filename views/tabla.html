@@ -42,11 +42,7 @@
             <td><%= datos[i].apellido%></td>
             <td><%= datos[i].numero %></td>
             <td><%= datos[i].estado %></td>
-            <td>
-                <form action="/modificarDato/<%=datos[i].id%>" method="GET">
-                    <input type="submit" value="modificar" class="btn btn-warning btn-xs">
-                </form>
-            </td>
+
         </tr>
         <% }%>
         </tbody>

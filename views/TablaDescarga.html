@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Cargar archivo</title>
+    <title>Descargas</title>
 
     <!-- Bootstrap -->
     <meta charset="utf-8">
@@ -37,19 +37,28 @@
         </div>
 </nav>
 <div class="container">
-<form action="/api/CargarArchivo" method="POST" enctype="multipart/form-data">
-    <fieldset>
+    <h1>Datos de la tabla Encuestados</h1>
 
-            <label>Seleccione el archivo con los datos a cargar</label>
-        <div>
-            <input type="hidden" value="<%=id%>" name="id">
-            <input type="file" name="archivo">
-        </div>
-        <button type="submit" class="btn btn-success btn-xs" >Cargar</button>
-    </fieldset>
-</form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th> Descargar </th>
+        </tr>
+        </thead>
+        <% for (var i= 0;i<archivo.length;i++){ %>
+        <tbody>
+        <tr>
+            <td><a href="/api/download/<%= archivo[i]%>"><%=archivo[i]%></a></td>
+
+        </tr>
+        <% }%>
+        </tbody>
+    </table>
+    <form action="/" method="GET">
+        <button type="submit" class="btn btn-primary">Volver</button>
+    </form>
 </div>
 
-<a href="/Proyecto" class="btn btn-primary">Atrás</a>
+
 </body>
 </html>

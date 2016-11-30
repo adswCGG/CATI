@@ -3,6 +3,7 @@
  */
 var express = require('express');
 var router= express.Router();
+var path = require("path");
 var bodyParser = require('body-parser');
 var app=express();
 var models  = require('../models/index.js');
@@ -251,6 +252,25 @@ router.post('/usuarios/:id',function(req,res) {
     }
 });
 
+router.get("/download/:name",function (req,res) {
+    res.download('../Proyecto/public/download/'+req.params.name)
+});
+
+
+router.get("/Download", function (req,res) {
+    var p = "./public/download";
+    fs.readdir(p, function (err, files) {
+        console.log(files)
+        if (err) {
+            throw err;
+        }
+        files.forEach(function (file) {
+            archivo.push(file);
+        });
+        res.render("TablaDescarga.html",{archivo:archivo})
+    });
+
+});
 
 //Cargar datos---> agregar extensiones posibles y mejorar la pagina de subida
 router.post("/CargarArchivo", function (req,res) {

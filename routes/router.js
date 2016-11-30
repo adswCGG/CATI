@@ -92,6 +92,15 @@ app.get("/CreateProyect",function (req,res) {
     }
 });
 
+app.get("/Download",function (req,res) {
+    if(req.session.name!="ADMIN"){
+        res.render("TablaDescarga.html")
+    }
+    else{
+        res.redirect("/")
+    }
+});
+
 app.get("/CargarArchivo", function (req,res) {
     if(req.session.permiso=="ADMIN") {
         res.render("CargarArchivo.html");
