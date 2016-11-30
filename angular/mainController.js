@@ -6,7 +6,7 @@ myApp.config(['$compileProvider',function($compileProvider) {
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|skype):/);
 }
 ]);
-myApp.controller("PrimerController",function ($scope,$http) {
+myApp.controller("PrimerController",function ($scope,$sce,$window,$http) {
     $scope.datos = [];
     $scope.user = [];
     $scope.formData = [];
@@ -25,7 +25,7 @@ myApp.controller("PrimerController",function ($scope,$http) {
                                 $scope.Proyects = data;
                                 for (var i = 0; i < $scope.Proyects.length; i++) {
                                     if ($scope.datos[0].ProyectId == $scope.Proyects[i].id) {
-                                        $scope.URL = $scope.Proyects[i].URL;
+                                        $scope.URL = $sce.trustAsResourceUrl($scope.Proyects[i].URL);
                                         break;
                                     }
                                 }
@@ -42,13 +42,14 @@ myApp.controller("PrimerController",function ($scope,$http) {
                 $scope.URL=[];
                 for(var i=0; i<$scope.Proyects.length; i++){
                     if($scope.datos[0].ProyectId==$scope.Proyects[i].id) {
-                        $scope.URL = $scope.Proyects[i].URL;
+                        $scope.URL = $sce.trustAsResourceUrl($scope.Proyects[i].URL);
                         break;
                     }
                 }
             })
     };
     $scope.estadoSi=function (id) {
+
         $scope.formData.text="si";
         $http.post('/api/baseDatosLlamar/'+id,$scope.formData)
             .success(function (data) {
@@ -56,10 +57,12 @@ myApp.controller("PrimerController",function ($scope,$http) {
                 $http.post('/api/baseDatosLlamar',$scope.formData)
                     .success(function(data){
                         $scope.datos = data;
+                        $window.location.reload();
                     })
             })
     };
     $scope.estadoDist=function (id) {
+        $window.location.reload();
         $http.post('/api/baseDatosLlamar/'+id,$scope.formData)
             .success(function (data) {
                 $scope.formData.text="";
