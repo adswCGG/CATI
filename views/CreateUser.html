@@ -4,7 +4,7 @@
     <title>Crear Usuario</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-    <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -26,10 +26,14 @@
     <div class="col-sm-8 col-sm-offset-2 text-center">
         <form action="/api/usuarios" method="POST">
             <fieldset>
-                    <input type="text" required name = "username" placeholder="Nombre Usuario" class="form-control input-lg text-center">
-                    <input type="password" required name = "password" placeholder="Contraseña" class="form-control input-lg text-center">
-                    <input type="text" required name = "email" placeholder="E-mail" class="form-control input-lg text-center">
+                    <label>Nombre de Usuario</label>
+                    <input type="text" required name = "username" placeholder="Ej: Jose Marino" class="form-control input-lg text-center">
+                    <label>Contraseña</label>
+                    <input type="password" required name = "password" class="form-control input-lg text-center">
+                    <label>Correo</label>
+                    <input type="text" required name = "email" placeholder="Ej: correo@dominio.com" class="form-control input-lg text-center">
                     <div>
+                        <label>Permiso</label>
                         <select class="form-control input-lg text-center" id="permiso" name="permiso">
                             <option value="ADMIN" >ADMIN</option>
                             <option value="ENCUESTADOR">ENCUESTADOR</option>

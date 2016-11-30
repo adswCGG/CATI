@@ -12,7 +12,7 @@ var opts ={
     }
 }
 
-var sequelize = new Sequelize("CATI",'root','tumadre123',opts);
+var sequelize = new Sequelize("CATI",'root','Jagex123',opts);
 var db = {};
 
 fs  .readdirSync(__dirname)
