@@ -259,6 +259,7 @@ router.get("/download/:name",function (req,res) {
 
 router.get("/Download", function (req,res) {
     var p = "./public/download";
+    var archivo = []
     fs.readdir(p, function (err, files) {
         console.log(files)
         if (err) {

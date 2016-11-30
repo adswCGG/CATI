@@ -16,25 +16,32 @@
 
 
 <div class="container">
-
+    <iframe ng-src="{{URL}}"
+            height="500"
+            width="700"
+            name="Encuesta"
+            style="border:2px solid grey;"
+            align="right"
+            scrolling="auto"
+    >
+    </iframe>
     <p class = "capitalize">Nombre: {{datos[0].nombre}} {{datos[0].apellido}}</p>
     <p>Numero: {{datos[0].numero}}</p>
     <p>Estado: {{datos[0].estado}}</p>
-    <p><a href="{{URL}}" target="_blank">Abrir Encuesta</a></p>
+
     <a href="skype:{{datos[0].numero}}?call" class="btn btn-success btn-lg">Llamar</a>
     <button ng-click="estadoSi(datos[0].id)" class="btn btn-info btn-lg">
         Encuesta Completada
     </button>
-</div>
-<div class="container">
-        <div>
-            <form name="form">
-                <input type="text" ng-model="formData.text">
-            </form>
-        </div>
-        <button ng-click="estadoDist(datos[0].id)">
-            Ingresar Estado manual
-        </button>
+    <hr>
+    <div>
+        <form name="form">
+            <input type="text" ng-model="formData.text">
+        </form>
+    </div>
+    <button ng-click="estadoDist(datos[0].id)">
+        Ingresar Estado manual
+    </button>
     <hr>
     <form  action="/" method="GET">
         <button type="submit" class="btn btn-info">Volver</button>
