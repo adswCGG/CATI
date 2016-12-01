@@ -55,10 +55,12 @@
         </tbody>
     </table>
     <label>Asignar a proyecto</label>
-    <select ng-model="formData.proyectId">
+    <div>
+    <select ng-model="formData.proyectId" class="form-control input-xs text-left" >
         <option ng-repeat="proyect in ProyectosNoAsignados" value="{{proyect.id}}">{{proyect.nombre}}</option>
     </select>
-    <input ng-click="Asignar(user)" type="submit" value="asignar" class="btn btn-warning btn-xs">
+</div>
+    <input ng-click="Asignar(user)" type="submit" value="asignar" class="btn btn-warning btn-default">
     <form action="/usuarios" method="GET">
         <button type="submit" class="btn btn-primary">Volver</button>
     </form>

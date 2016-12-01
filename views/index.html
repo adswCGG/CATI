@@ -82,11 +82,9 @@
 
 <div class="container">
 <h1>Bienvenido al Sistema CATI</h1>
+<% if (session.permiso == "ENCUESTADOR"){ %>
 <hr>
-<div>
   <a href="/Call" class="btn btn-success btn-lg">Iniciar llamadas</a>
-</div>
-<a href="/api/download/foto.jpg">Descargar</a>
-</div>
+<% } %>
 </body>
 </html>
