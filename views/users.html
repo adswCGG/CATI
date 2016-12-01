@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="userApp">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,12 +7,13 @@
 
     <title>Usuarios</title>
 
-    <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="/userController.js"></script>
 
 </head>
-<body>
+<body ng-controller="UserController">
 
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -26,39 +27,41 @@
       </button>
       <a class="navbar-brand" href="/">Inicio</a>
     </div>
+  </div>
 </nav>
-
 <div class="container">
 <h1>Lista de usuarios</h1>
-
 <table class="table">
     <thead>
     <tr>
         <th> ID </th>
         <th> Username </th>
-        <th> Password </th>
+        <th> Permiso </th>
         <th> Email </th>
         <th> Acciones </th>
     </tr>
     </thead>
-    <% for (var i= 0;i<resultado.length;i++){ %>
-    <tbody>
+    <tbody ng-repeat="user in users">
     <tr>
-        <td><%= resultado[i].id%></td>
-        <td><%= resultado[i].username%></td>
-        <td><%= resultado[i].password %></td>
-        <td><%= resultado[i].email %></td>
+        <td>{{user.id}}</td>
+        <td>{{user.username}}</td>
+        <td>{{user.permiso}}</td>
+        <td>{{user.email }}</td>
         <td>
-            <form action="/modificar/<%=resultado[i].id%>" method="GET">
+            <form action="/modificar" method="POST">
+                <input type="hidden" value="{{user.id}}" name="id">
                 <input type="submit" value="modificar" class="btn btn-warning btn-xs">
             </form>
-            <form action="/api/usuarios/<%=resultado[i].id%>" method="POST">
-                <input type="hidden" value="DELETE" name="method">
-                <input type="submit" value="eliminar" class="btn btn-danger btn-xs">
+            <form action="/usuarios" method="POST">
+                <input type="hidden" value="{{user.id}}" name="id">
+                <input type="submit" value="Ver" class="btn btn-warning btn-xs">
             </form>
+            <button ng-click="delete(user.id)" class="btn btn-danger btn-xs">
+                Eliminar
+            </button>
+
         </td>
     </tr>
-    <% }%>
     </tbody>
 </table>
 <form action="/" method="GET">

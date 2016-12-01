@@ -3,6 +3,7 @@
  */
 var express = require('express');
 var router= express.Router();
+var path = require("path");
 var bodyParser = require('body-parser');
 var app=express();
 var models  = require('../models/index.js');
@@ -10,9 +11,10 @@ var fs = require("fs");
 
 
 
+
 app.use(bodyParser.urlencoded({extended: true }));
 app.use(bodyParser.json());
-
+//logout
 router.get("/logout",function (req,res) {
     if(req.session.name){
         req.session.destroy();
@@ -20,84 +22,138 @@ router.get("/logout",function (req,res) {
     res.redirect("/")
 });
 
+//los usa userController--> agregar al reves para usar en profileController
+router.get("/usersProyect/:id", function (req,res) {
+    models.UserProyect.findAll({where:{UserId: req.params.id}}).then(function (result) {
+        res.json(result);
+    });
+});
+router.get("/proyectUsers/:id", function (req,res) {
+    models.UserProyect.findAll({where:{ProyectId: req.params.id}}).then(function (result) {
+        res.json(result);
+    });
+});
+
+router.get("/userProyect",function (req,res) {
+    models.UserProyect.findAll().then(function (datos) {
+        res.json(datos)
+        })
+});
+
+router.post('/userProyect/:id',function(req,res) {
+    if (req.body.text == "DELETE") {
+        models.UserProyect.destroy({where: {id: req.params.id}}).then(function (userProyect) {
+            return models.UserProyect.findAll().then(function (userProyect) {
+                res.json(userProyect);
+            })
+        })
+    }
+    else if(req.body.text=="Create"){
+        models.UserProyect.create({
+        UserId: req.params.id,
+        ProyectId: req.body.proyectId
+    }).then(function (result) {
+        models.UserProyect.findAll({}).then(function (userProyect) {
+            res.json(userProyect);
+        })
+    });
+    }
+
+});
+
+router.post('/proyectUsers/:id',function(req,res) {
+    if(req.body.text=="Create"){
+        models.UserProyect.create({
+            UserId: req.body.userId,
+            ProyectId: req.params.id
+        }).then(function (result) {
+            models.UserProyect.findAll().then(function (userProyect) {
+                res.json(userProyect);
+            })
+        });
+    }
+});
+
+//obtener datos tabla rol
+router.get("/Rol",function (req,res) {
+    models.Rol.findAll().then(function (datos) {
+        res.json(datos)
+    })
+});
+
+router.get("/Rol/:id",function (req,res) {
+    models.Rol.findAll({where:{UserId: req.params.id}}).then(function (datos) {
+        res.json(datos)
+    })
+});
+
+
+//??????
 router.post("/baseDatosLlamar",function (req,res) {
-        models.ProyectDato.findAll({
+        models.Dato.findAll({
             where: {
                 estado:  "no"
                 ,
                 ProyectId: req.body.id
         }
     }).then(function (dato) {
-            ids = [];
-            for (var i = 0; i < dato.length; i++) {
-                ids.push(dato[i].DatoId);
-            }
-            models.Dato.findAll({where: {id: {in: ids}}, include: [models.ProyectDato]}).then(function (datoFin) {
-                res.json(datoFin);
-            })
+            res.json(dato)
         })
 
 });
 router.post('/baseDatosLlamar/:id',function(req,res) {
-    models.ProyectDato.find({where: {ProyectId: req.body.id, DatoId: req.params.id}}).then(function (dato) {
+    models.Dato.find({where: {ProyectId: req.body.id, Id: req.params.id}}).then(function (dato) {
         dato.updateAttributes({
             estado: req.body.text
         });
         res.json(dato);
     });
 });
-router.get("/usuarios", function (req,res) {
-    if(req.session.permiso=="ADMIN") {
-        models.User.findAll().then(function (user) {
-            res.render('users.html', {resultado: user, user: req.session});
-        });
-    }
-    else{
-        res.redirect("/");
-    }
-});
-
+// Ver tabla
+//ver datos de tabla
 router.post("/baseDatos",function (req,res) {
     if(req.session.permiso == "ADMIN") {
-        models.ProyectDato.findAll({where: {ProyectId: req.body.idProyect}}).then(function (dato){
-            ids=[];
-            estados=[];
-            for (var i=0; i<dato.length; i++) {
-                    ids.push(dato[i].DatoId);
-            }
-            for (var i=0; i<dato.length; i++) {
-                estados.push(dato[i].estado);
-            }
-            models.Dato.findAll({where: {id:{in: ids }},include:[models.ProyectDato]  }).then(function (datoFin) {
-                res.render('tabla.html',{datos: datoFin,});
-            })
-
+        models.Dato.findAll({where: {ProyectId: req.body.idProyect}}).then(function (dato){
+                res.render('tabla.html',{datos: dato});
         })
     }
     else {
         res.redirect("/");
     }
 });
-
-router.get("/Proyecto",function (req,res) {
-    models.Proyect.findAll().then(function (proyect) {
-        res.render('proyects.html',{resultado: proyect});
-    })
-});
-
+//lo esta usando el userController, quita eso y cambialo por el de abajo
 router.get("/Proyect",function (req,res) {
     models.Proyect.findAll().then(function (proyect) {
         res.json(proyect);
     })
 });
 
+//CRUD proyecto
+
+//obtener proyectos
+router.get("/Proyect/:id",function (req,res) {
+    models.Proyect.findAll({where:{id:req.params.id}}).then(function (proyect) {
+        res.json(proyect)
+    })
+})
+
+//Crear proyecto
 router.post("/Proyect",function (req,res) {
-    models.Proyect.create({
-        nombre: req.body.nombre
-    });
+    if(req.body.url.slice(0,7)=="http://" || req.body.url.slice(0,8)=="https://") {
+        models.Proyect.create({
+            nombre: req.body.nombre,
+            URL: req.body.url
+        });
+    }else{
+        models.Proyect.create({
+            nombre: req.body.nombre,
+            URL: "http://"+req.body.url
+        });
+    }
     res.redirect("/");
 });
 
+//editar, borrar proyecto, redirecciona
 router.post('/Proyect/:id',function(req,res) {
     if (req.body.method == "PUT") {
         models.Proyect.find({where: {id: req.params.id}}).then(function (proyect) {
@@ -108,28 +164,28 @@ router.post('/Proyect/:id',function(req,res) {
             })
         })
     }
-    else if (req.body.method == "DELETE") {
+    else if (req.body.text == "DELETE") {
         models.Proyect.destroy({where: {id: req.params.id}}).then(function (proyect) {
             return models.Proyect.findAll().then(function (proyect) {
-                res.redirect("/");
+                res.json(proyect);
             })
         })
     }
 });
 
-
+//CRUD usuario
+//Obtener todos los usuarios, angular
 router.get("/usuarios", function (req,res) {
     if (req.session.permiso == "ADMIN") {
         models.User.findAll().then(function (user) {
-            res.render('users.html', {resultado: user});
+            res.json(user);
         })
     }
     else {
         res.redirect("/");
     }
 });
-
-
+//Crear usuario
 router.post("/usuarios", function (req,res) {
     models.User.create({
         username: req.body.username,
@@ -144,18 +200,17 @@ router.post("/usuarios", function (req,res) {
     });
 });
 
-
-router.get('/usuarios/:id',function(req,res) {
-
+//obtener datos, angular
+router.get('/profile/:id',function(req,res) {
     models.User.findAll({
         where: {
             id: req.params.id
         }
     }).then(function (user) {
-        res.render('users.html', {title: 'Listar Usuarios', resultado: user});
+        res.json(user);
     });
 });
-
+//Editar y eliminar users,redirect
 router.post('/usuarios/:id',function(req,res) {
     if (req.body.method == "PUT") {
         models.User.find({where: {id: req.params.id}}).then(function (user) {
@@ -188,17 +243,37 @@ router.post('/usuarios/:id',function(req,res) {
             }
             })
         }
-    else if (req.body.method == "DELETE") {
+    else if (req.body.text == "DELETE") {
         models.User.destroy({where: {id: req.params.id}}).then(function (user) {
-            return models.User.findAll().then(function (user) {
-                res.redirect("/");
+            models.User.findAll().then(function (user) {
+                res.json(user);
             })
         })
     }
 });
 
+router.get("/download/:name",function (req,res) {
+    res.download('../Proyecto/public/download/'+req.params.name)
+});
 
 
+router.get("/Download", function (req,res) {
+    var p = "./public/download";
+    var archivo = []
+    fs.readdir(p, function (err, files) {
+        console.log(files)
+        if (err) {
+            throw err;
+        }
+        files.forEach(function (file) {
+            archivo.push(file);
+        });
+        res.render("TablaDescarga.html",{archivo:archivo})
+    });
+
+});
+
+//Cargar datos---> agregar extensiones posibles y mejorar la pagina de subida
 router.post("/CargarArchivo", function (req,res) {
     fs.readFile(req.body.archivo.path,'utf8',function read(err,allText) {
         if (err){
@@ -217,18 +292,13 @@ router.post("/CargarArchivo", function (req,res) {
                 lines.push(tarr);
             }
         }
-        for(var i=0;i<lines.length;i++){
+        for(var j=0;j<lines.length;j++){
             models.Dato.create({
-                nombre: lines[i][0],
-                apellido: lines[i][1],
-                numero: lines[i][2],
-                estado: lines[i][3]
-            }).then(function (dato) {
-                models.ProyectDato.create({
-                    DatoId: dato.id,
-                    ProyectId: req.body.id,
-                    estado: dato.estado
-                })
+                nombre: lines[j][0],
+                apellido: lines[j][1],
+                numero: lines[j][2],
+                estado: lines[j][3],
+                ProyectId: req.body.id
             })
         }
         console.log(req.body.archivo.path);

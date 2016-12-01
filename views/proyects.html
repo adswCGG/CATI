@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="proyectApp">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,12 +7,14 @@
 
     <title>Proyectos</title>
 
-    <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="/proyectController.js"></script>
 
 </head>
-<body>
+<body ng-controller="ProyectController">
 
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -24,6 +26,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+    </div>
       <a class="navbar-brand" href="/">Inicio</a>
     </div>
 </nav>
@@ -38,37 +41,34 @@
         <th> Nombre </th>
     </tr>
     </thead>
-    <% for (var i= 0;i<resultado.length;i++){ %>
-    <tbody>
+    <tbody ng-repeat="proyect in Proyects">
     <tr>
-        <td><%= resultado[i].id%></td>
-        <td><%= resultado[i].nombre%></td>
+        <td>{{proyect.id}}</td>
+        <td>{{proyect.nombre}}</td>
         <td>
-            <table>
-                <tbody>
-            <form action="/updateProyect/<%=resultado[i].id%>" method="GET">
+            <form action="/updateProyect" method="POST">
+                <input type="hidden" value="{{proyect.id}}" name="id">
                 <input type="submit" value="modificar" class="btn btn-warning btn-xs">
             </form>
             <form action="/api/baseDatos" method="POST">
-                <input type="hidden" value="<%=resultado[i].id%>" name="idProyect">
+                <input type="hidden" value="{{proyect.id}}" name="idProyect">
                 <input type="submit" value="Ver datos" class="btn btn-info btn-xs">
             </form>
             <form action="/CargarArchivo" method="POST">
-                <input type="hidden" value="<%=resultado[i].id%>" name="idProyect">
+                <input type="hidden" value="{{proyect.id}}" name="idProyect">
                 <input type="submit" value="Cargar Datos" class="btn btn-success btn-xs">
             </form>
-            <form action="/api/Proyect/<%=resultado[i].id%>" method="POST">
-                <input type="hidden" value="DELETE" name="method">
-                <input type="submit" value="eliminar" class="btn btn-danger btn-xs">
+            <button ng-click="delete(proyect.id)" class="btn btn-danger btn-xs">
+                Eliminar
+            </button>
+            <form action="/Proyect" method="POST">
+                <input type="hidden" value="{{proyect.id}}" name="id">
+                <input type="submit" value="Ver" class="btn btn-warning btn-xs">
             </form>
-            </tbody>
-            </table>
         </td>
     </tr>
-    <% }%>
     </tbody>
 </table>
-<hr>
 <form action="/" method="GET">
     <button type="submit" class="btn btn-primary">Volver</button>
 </form>

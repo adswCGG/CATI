@@ -5,7 +5,7 @@
     <title>Datos guardados</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-    <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -41,12 +41,13 @@
             <td><%= datos[i].nombre%></td>
             <td><%= datos[i].apellido%></td>
             <td><%= datos[i].numero %></td>
-            <td><%= datos[i].ProyectDatos.estado %></td>
+            <td><%= datos[i].estado %></td>
+
         </tr>
         <% }%>
         </tbody>
     </table>
-    <form action="/" method="GET">
+    <form action="/Proyecto" method="GET">
         <button type="submit" class="btn btn-primary">Volver</button>
     </form>
 </div>

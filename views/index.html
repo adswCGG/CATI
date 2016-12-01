@@ -10,7 +10,7 @@
   <!-- Bootstrap -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css">
+  <link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -52,11 +52,19 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Proyectos <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="/api/Proyecto">Ver Proyectos</a></li>
+                    <li><a href="/Proyecto">Ver Proyectos</a></li>
                     <li><a href="/CreateProyect">Crear Proyecto</a></li>
                 </ul>
             </li>
         </ul>
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Descargas <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/api/Download">Descargar audio</a></li>
+          </ul>
+        </li>
+      </ul>
         <% } %>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
@@ -74,8 +82,9 @@
 
 <div class="container">
 <h1>Bienvenido al Sistema CATI</h1>
+<% if (session.permiso == "ENCUESTADOR"){ %>
 <hr>
-<a href="/Call" class="btn btn-success btn-lg">Iniciar llamadas</a>
-</div>
+  <a href="/Call" class="btn btn-success btn-lg">Iniciar llamadas</a>
+<% } %>
 </body>
 </html>

@@ -11,10 +11,15 @@ module.exports = function (sequelize, DataTypes) {
 
     } , {
         classMethods: {
-            associate: function(models){
-                Dato.hasMany(models.ProyectDato)
+            associate: function (models) {
+                Dato.belongsTo(models.Proyect, {
+                    onDelete: "CASCADE",
+                    foreignKey: {
+                        allowNull: false
+                    }
+                })
             }
         }
     });
     return Dato;
-}
+};

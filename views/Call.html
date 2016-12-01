@@ -4,88 +4,45 @@
     <meta charset="UTF-8">
     <title>Llamadas</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-    <script>
-        var myApp=angular.module("myApp", []);
-        myApp.config(['$compileProvider',function($compileProvider) {
-            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|skype):/);
-        }
-        ]);
-        myApp.controller("PrimerController",function ($scope,$http) {
-            $scope.users = [];
-            $scope.formData = {id: 1};
-            $scope.Proyects=[];
-            $http.post('/api/baseDatosLlamar',$scope.formData)
-                    .success(function(data){
-                        $scope.users = data;
-                        $http.get('/api/Proyect')
-                                .success(function (data) {
-                                    $scope.Proyects=data;
-                                })
-                    })
-            $scope.cambiarProyect=function (id) {
-                $scope.formData.id = id
-                $http.post('/api/baseDatosLlamar',$scope.formData)
-                        .success(function(data){
-                            $scope.users = data;
-                        })
-            };
-            $scope.estadoSi=function (id) {
-                $scope.formData.text="si";
-                $http.post('/api/baseDatosLlamar/'+id,$scope.formData)
-                        .success(function (data) {
-                            $scope.formData.text={};
-                            $http.post('/api/baseDatosLlamar',$scope.formData)
-                                    .success(function(data){
-                                        $scope.users = data;
-                                    })
-                        })
-            };
-            $scope.estadoDist=function (id) {
-                $http.post('/api/baseDatosLlamar/'+id,$scope.formData)
-                        .success(function (data) {
-                            $scope.formData.text={};
-                            $http.post('/api/baseDatosLlamar',$scope.formData)
-                                    .success(function(data){
-                                        $scope.users = data;
-                                    })
-                        })
-            }
-        });
-
-    </script>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <script src="/mainController.js"></script>
+    <link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css">
 </head>
 <style>
     p.capitalize { text-transform: capitalize; }
     body         { padding-top:80px; }
 </style>
-<body ng-controller="PrimerController">
+<body ng-controller="PrimerController" ng-init="init(<%=UserId%>)">
 
-<div class="container" >
-    Escoja Proyecto
-        <div  ng-repeat="proyect in Proyects">
-    <button ng-click="cambiarProyect(proyect.id)"> {{proyect.nombre}}</button>
-        </div>
-</div>
 
 <div class="container">
-    <p class = "capitalize">Nombre: {{users[0].nombre}} {{users[0].apellido}}</p>
-    <p>Numero: {{users[0].numero}}</p>
-    <a href="skype:{{users[0].numero}}?call" class="btn btn-success btn-lg">Llamar</a>
-    <button ng-click="estadoSi(users[0].id)" class="btn btn-info btn-lg">
+    <iframe ng-src="{{URL}}"
+            height="500"
+            width="700"
+            name="Encuesta"
+            style="border:2px solid grey;"
+            align="right"
+            scrolling="auto"
+    >
+    </iframe>
+    <p class = "capitalize">Nombre: {{datos[0].nombre}} {{datos[0].apellido}}</p>
+    <p>Numero: {{datos[0].numero}}</p>
+    <p>Estado: {{datos[0].estado}}</p>
+
+    <a href="skype:{{datos[0].numero}}?call" class="btn btn-success btn-lg">Llamar</a>
+    <button ng-click="estadoSi(datos[0].id)" class="btn btn-info btn-lg">
         Encuesta Completada
     </button>
-</div>
-<div class="container">
-        <div>
-            <input type="text" placeholder="Estado comentado" ng-model="formData.text">
-        </div>
-        <button ng-click="estadoDist(users[0].id)">
-            Ingresar Estado manual
-        </button>
     <hr>
-    <form action="/" method="GET">
+    <div>
+        <form name="form">
+            <input type="text" ng-model="formData.text">
+        </form>
+    </div>
+    <button ng-click="estadoDist(datos[0].id)" class="btn btn-warning btn-sm">
+        Ingresar Estado manual
+    </button>
+    <hr>
+    <form  action="/" method="GET">
         <button type="submit" class="btn btn-info">Volver</button>
     </form>
 
